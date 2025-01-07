@@ -163,7 +163,7 @@ export default function Home() {
         </div>
         <div className="flex flex-col items-center w-96 h-auto p-8 bg-white mt-24 bg-opacity-30 backdrop-blur-md rounded-lg shadow-2xl shadow-[#FF7272]/10 scale-150">
           <img
-            src="assets/images/Illustration - Business, error _ comment, review, account, profile, user, list, problem.png"
+            src="assets/images/illustration2.png"
             alt="Pantau hasil real count"
             className="w-48 h-48"
           />
