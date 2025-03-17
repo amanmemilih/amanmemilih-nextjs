@@ -21,4 +21,4 @@ jobs:
         with:
           push: true
           context: .
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/app:${{ github.ref_name }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/amanmemilih-frontend:${{ github.ref_name }}

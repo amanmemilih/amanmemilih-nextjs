@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  frontyard:
+    image: __IMAGE__:__TAG__
+    container_name: app-frontyard
+    ports:
+      - "3000:3000"
+    network_mode: bridge
+    restart: unless-stopped
