@@ -22,6 +22,124 @@ export default function Home() {
     setData(response.data.data);
   }
 
+  useEffect(() => {
+    // Dynamically import particles.js and initialize it
+    import("particles.js").then(() => {
+      if (window.particlesJS) {
+        window.particlesJS("particles-js", {
+          particles: {
+            number: {
+              value: 80,
+              density: {
+                enable: true,
+                value_area: 800,
+              },
+            },
+            color: {
+              value: "#3A3A3A",
+            },
+            shape: {
+              type: "circle",
+              stroke: {
+                width: 0,
+                color: "#000000",
+              },
+              polygon: {
+                nb_sides: 5,
+              },
+              image: {
+                src: "img/github.svg",
+                width: 100,
+                height: 100,
+              },
+            },
+            opacity: {
+              value: 0.5,
+              random: false,
+              anim: {
+                enable: false,
+                speed: 1,
+                opacity_min: 0.1,
+                sync: false,
+              },
+            },
+            size: {
+              value: 3,
+              random: true,
+              anim: {
+                enable: false,
+                speed: 40,
+                size_min: 0.1,
+                sync: false,
+              },
+            },
+            line_linked: {
+              enable: true,
+              distance: 150,
+              color: "#3A3A3A",
+              opacity: 0.4,
+              width: 1,
+            },
+            move: {
+              enable: true,
+              speed: 6,
+              direction: "none",
+              random: false,
+              straight: false,
+              out_mode: "out",
+              bounce: false,
+              attract: {
+                enable: false,
+                rotateX: 600,
+                rotateY: 1200,
+              },
+            },
+          },
+          interactivity: {
+            detect_on: "canvas",
+            events: {
+              onhover: {
+                enable: true,
+                mode: "repulse",
+              },
+              onclick: {
+                enable: true,
+                mode: "push",
+              },
+              resize: true,
+            },
+            modes: {
+              grab: {
+                distance: 400,
+                line_linked: {
+                  opacity: 1,
+                },
+              },
+              bubble: {
+                distance: 400,
+                size: 40,
+                duration: 2,
+                opacity: 8,
+                speed: 3,
+              },
+              repulse: {
+                distance: 200,
+                duration: 0.4,
+              },
+              push: {
+                particles_nb: 4,
+              },
+              remove: {
+                particles_nb: 2,
+              },
+            },
+          },
+          retina_detect: true,
+        });
+      }
+    });
+  }, []);
+
   function truncateText(htmlString, length) {
     // Menghapus semua tag HTML
     const textOnly = htmlString.replace(/<\/?[^>]+(>|$)/g, "");
@@ -51,41 +169,36 @@ export default function Home() {
               Pemungutan Suara Modern dengan Keamanan Tinggi dan Fleksibilitas
             </p>
             <p className="font-normal leading-8 text-[20px] md:text-[10] mt-12">
-              AmanMemilih hadir sebagai solusi dari pengembangan sistem
-              rekapitulasi suara menggunakan teknologi Web 3.0, dengan ini hasil
-              rekapitulasi suara tidak bisa dimanipulasi oleh pihak ketiga.
+              AmanMemilih hadir sebagai solusi dari pengembangan sistem rekapitulasi suara menggunakan teknologi Web 3.0,
+              dengan ini hasil rekapitulasi suara tidak bisa dimanipulasi oleh pihak ketiga.
             </p>
-            <button className="font-semibold text-[20] bg-[linear-gradient(5deg,_#ffd596_0%,_#ff7272_43%)] text-white px-8 py-4 rounded-lg mt-12 z-10 relative">
+            <button
+              className="font-semibold text-[20] bg-[linear-gradient(5deg,_#ffd596_0%,_#ff7272_43%)] text-white px-8 py-4 rounded-lg mt-12 z-10 relative"
+            >
               {/* bg-gradient-to-b from-[#FF7272] from-60% to-[#FFD596] */}
               Unduh Sekarang
             </button>
           </div>
           <div className="items-center">
-            <img src="assets/images/Illustration.png" alt="" />
+            <img src="assets/Illustration.png" alt="" />
           </div>
         </div>
       </div>
+
       {/* Particle.js Background */}
-      <div
-        id="particles-js"
-        className="mt-24 mb-48 absolute inset-0 z-[-1] overflow-hidden opacity-50"
-      ></div>
-      <div id="tentang"></div>
+      <div id="particles-js" className="mt-24 mb-48 absolute inset-0 z-[-1] overflow-hidden opacity-50"></div>
+
       {/* ----- SECTION CARD INFO ----- */}
       <div className="flex items-center justify-center space-x-8 my-24 mb-32 px-2">
-        <span className="text-black text-[44px] font-semibold mr-[-32px]">
-          Aman
-        </span>
-        <span className="text-[#FF7272] text-[44px] font-semibold">
-          Memilih
-        </span>
+        <span className="text-black text-[44px] font-semibold mr-[-32px]">Aman</span>
+        <span className="text-[#FF7272] text-[44px] font-semibold">Memilih</span>
         <p className="text-gray-700 text-lg max-w-4xl">
-          Aplikasi berbasis teknologi blockchain dengan sistem yang tidak
-          terpusat dan menjamin keamanan data, terutama data suara dan data
-          pengguna. Kami menjaga informasi, menjamin integritas data, keamanan,
-          dan mengeliminasi kemungkinan bocornya suatu informasi.
+          Aplikasi berbasis teknologi blockchain dengan sistem yang tidak terpusat dan menjamin keamanan data, terutama data
+          suara dan data pengguna. Kami menjaga informasi, menjamin integritas data, keamanan, dan mengeliminasi kemungkinan
+          bocornya suatu informasi.
         </p>
       </div>
+
       {/* Container Box */}
       <div className="container mx-auto flex flex-row mb-4 justify-between space-x-4">
         {/* Box 1 */}
