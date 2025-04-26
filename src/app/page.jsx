@@ -10,6 +10,8 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
   // Cards data for carousel
   const cardsData = [
@@ -36,6 +38,29 @@ export default function Home() {
   // Function to navigate to a specific slide
   const goToSlide = (slideIndex) => {
     setCurrentSlide(slideIndex);
+  };
+
+  // Touch handlers for swipe functionality
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 75) {
+      // Swipe left - next slide
+      const nextSlide = currentSlide === cardsData.length - 1 ? 0 : currentSlide + 1;
+      setCurrentSlide(nextSlide);
+    }
+
+    if (touchStart - touchEnd < -75) {
+      // Swipe right - previous slide
+      const prevSlide = currentSlide === 0 ? cardsData.length - 1 : currentSlide - 1;
+      setCurrentSlide(prevSlide);
+    }
   };
 
   useEffect(() => {
@@ -344,7 +369,7 @@ export default function Home() {
             ></div>
 
             <div className="px-4 py-24 flex flex-col justify-center mt-12 relative z-10">
-              <h1 className="font-semibold text-[32px] mt-16 leading-tight text-white">
+              <h1 className="font-semibold text-[32px] mt-32 leading-tight text-white">
                 Pemungutan Suara Modern dengan Keamanan Tinggi dan Fleksibilitas
               </h1>
               <p className="font-thin leading-7 text-[16px] mt-4 text-white">
@@ -407,42 +432,57 @@ export default function Home() {
         {/* Mobile version - carousel with dots */}
         <div className="md:hidden">
           <div className="relative overflow-hidden">
-            {/* Carousel container */}
-            <div className="carousel-container">
-              {/* Card with enhanced styling for mobile */}
+            {/* Carousel container with transition styling */}
+            <div
+              className="relative w-full h-full overflow-hidden"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
               <div
-                className="px-6 py-8 rounded-2xl shadow-2xl shadow-[#FF7272]/10 border-2 border-gray-100 bg-white"
+                className="flex transition-transform duration-300 ease-out"
+                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
-                <div className="flex flex-col justify-center">
-                  <button className="mx-auto py-3 px-6 rounded-full text-black font-bold bg-[#ECECEC] transition-all duration-300 hover:bg-[#FF7272] hover:text-[#FFFFFF]">
-                    {cardsData[currentSlide].title}
-                  </button>
-                  <p className="my-4 text-center text-sm">
-                    {cardsData[currentSlide].description}
-                  </p>
-                </div>
-                <div className="flex justify-center mt-4">
-                  <img
-                    className="w-full max-w-[220px]"
-                    src={cardsData[currentSlide].image}
-                    alt={cardsData[currentSlide].title}
-                  />
-                </div>
+                {cardsData.map((card) => (
+                  <div key={card.id} className="min-w-full px-2">
+                    <div className="h-full px-5 py-8 rounded-2xl shadow-xl shadow-[#FF7272]/10 border-2 border-gray-100 bg-white">
+                      <div className="flex flex-col justify-center">
+                        <button className="mx-auto py-3 px-6 rounded-full text-black font-bold bg-[#ECECEC] transition-all duration-300 hover:bg-[#FF7272] hover:text-[#FFFFFF]">
+                          {card.title}
+                        </button>
+                        <p className="my-4 text-center text-sm">
+                          {card.description}
+                        </p>
+                      </div>
+                      <div className="flex justify-center mt-4">
+                        <img
+                          className="w-full max-w-[220px]"
+                          src={card.image}
+                          alt={card.title}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
             {/* Dots navigation */}
-            <div className="flex justify-center mt-6 space-x-2">
+            <div className="flex justify-center mt-6 space-x-3">
               {cardsData.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => goToSlide(index)}
                   aria-label={`Go to slide ${index + 1}`}
-                  className={`w-3 h-3 rounded-full transition-colors ${currentSlide === index ? 'bg-[#FF7272]' : 'bg-gray-300'
+                  className={`w-2.5 h-2.5 rounded-full transition-colors ${currentSlide === index ? 'bg-[#FF7272]' : 'bg-gray-300'
                     }`}
                 />
               ))}
             </div>
+
+            <p className="text-center text-gray-400 text-xs mt-3">
+              Geser ke kanan atau kiri untuk melihat fitur lainnya
+            </p>
           </div>
         </div>
       </div>
