@@ -22,9 +22,9 @@ const Footer = () => {
             {/* Left section - Logo and text */}
             <div className="flex flex-col">
               <img
-                src="/assets/images/logoam.png"
+                src="/assets/images/FooterMobile2.png"
                 alt="Logo"
-                className="h-16 w-auto mb-6"
+                className="h-10 w-20 mb-6"
               />
               <p className="text-[12px] text-[#A6A6A6] mb-1">
                 Prototype by AmanMemilih

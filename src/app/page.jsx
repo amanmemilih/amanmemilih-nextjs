@@ -359,28 +359,45 @@ export default function Home() {
         {/* Mobile Hero Section with background image */}
         <div className="block md:hidden">
           <div
-            className="min-h-[100vh] bg-cover bg-center relative"
+            className="h-screen w-full bg-cover bg-center relative overflow-hidden"
             style={{ backgroundImage: 'url(/assets/images/HeroSectionMobile.png)' }}
           >
-            {/* Using BackgroundHero.png as overlay instead of semi-transparent black */}
+            {/* Using BackgroundHero.png as overlay */}
             <div
               className="absolute inset-0 z-0 bg-cover bg-center"
               style={{ backgroundImage: 'url(/assets/images/BackgroundHero.png)' }}
             ></div>
 
-            <div className="px-4 py-24 flex flex-col justify-center mt-12 relative z-10">
-              <h1 className="font-semibold text-[32px] mt-32 leading-tight text-white">
-                Pemungutan Suara Modern dengan Keamanan Tinggi dan Fleksibilitas
-              </h1>
-              <p className="font-thin leading-7 text-[16px] mt-4 text-white">
-                AmanMemilih hadir sebagai solusi dari pengembangan sistem rekapitulasi suara menggunakan teknologi Web 3.0,
-                dengan ini hasil rekapitulasi suara tidak bisa dimanipulasi oleh pihak ketiga.
-              </p>
-              <button
-                className="font-semibold text-[16px] bg-[linear-gradient(5deg,_#ffd596_0%,_#ff7272_43%)] text-white py-3 rounded-lg mt-6 z-10 relative w-full"
-              >
-                Unduh Sekarang
-              </button>
+            {/* Content container with fixed positioning relative to viewport height */}
+            <div className="absolute inset-x-0 z-10 px-4">
+              {/* Fixed content layout that maintains position across devices */}
+              <div className="flex flex-col h-screen">
+                {/* Top spacing that ensures content stays in the right spot */}
+                <div className="h-[30vh]"></div>
+
+                {/* Fixed content area */}
+                <div className="flex-1 flex flex-col justify-center">
+                  <h1 className="font-semibold text-[28px] sm:text-[32px] leading-tight text-white">
+                    Pemungutan Suara Modern dengan Keamanan Tinggi dan Fleksibilitas
+                  </h1>
+                  <p className="font-thin leading-7 text-[15px] sm:text-[16px] mt-4 text-white">
+                    AmanMemilih hadir sebagai solusi dari pengembangan sistem rekapitulasi suara menggunakan teknologi Web 3.0,
+                    dengan ini hasil rekapitulasi suara tidak bisa dimanipulasi oleh pihak ketiga.
+                  </p>
+
+                  {/* Button positioned consistently at the bottom with fixed spacing */}
+                  <div className="mt-6 sm:mt-8">
+                    <button
+                      className="font-semibold text-[16px] bg-[linear-gradient(5deg,_#ffd596_0%,_#ff7272_43%)] text-white py-3 rounded-lg w-full"
+                    >
+                      Unduh Sekarang
+                    </button>
+                  </div>
+                </div>
+
+                {/* Bottom spacing */}
+                <div className="h-[15vh]"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -413,8 +430,11 @@ export default function Home() {
         {/* Desktop version - regular layout */}
         <div className="hidden md:flex flex-row gap-4 justify-between">
           {cardsData.map((card) => (
-            <div key={card.id} className="flex flex-col justify-center rounded-2xl shadow-2xl shadow-[#FF7272]/10 border-2 border-gray-100 w-full">
-              <div className="px-8 py-12 flex flex-col justify-center">
+            <div
+              key={card.id}
+              className="flex flex-col justify-between rounded-2xl shadow-md shadow-[#FF7272]/20 border-2 border-gray-100 w-full bg-white transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[#FF7272]/30"
+            >
+              <div className="flex flex-col flex-grow px-8 py-12 justify-center">
                 <button className="mx-auto py-3 px-6 rounded-full text-black font-bold bg-[#ECECEC] transition-all duration-300 hover:bg-[#FF7272] hover:text-[#FFFFFF]">
                   {card.title}
                 </button>
@@ -423,7 +443,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex justify-center">
-                <img className="w-full max-w-[300px]" src={card.image} alt={card.title} />
+                <img className="w-full max-w-[300px] object-contain" src={card.image} alt={card.title} />
               </div>
             </div>
           ))}
@@ -440,13 +460,18 @@ export default function Home() {
               onTouchEnd={handleTouchEnd}
             >
               <div
-                className="flex transition-transform duration-300 ease-out"
+                className="flex transition-transform duration-500 ease-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
-                {cardsData.map((card) => (
-                  <div key={card.id} className="min-w-full px-2">
-                    <div className="h-full px-5 py-8 rounded-2xl shadow-xl shadow-[#FF7272]/10 border-2 border-gray-100 bg-white">
-                      <div className="flex flex-col justify-center">
+                {cardsData.map((card, index) => (
+                  <div
+                    key={card.id}
+                    className={`min-w-full px-2 transition-all duration-500 ease-in-out
+              ${currentSlide === index ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+              `}
+                  >
+                    <div className="h-full px-5 py-8 rounded-2xl shadow-md shadow-[#FF7272]/20 border-2 border-gray-100 bg-white transition-all duration-300 active:scale-95">
+                      <div className="flex flex-col flex-grow justify-center">
                         <button className="mx-auto py-3 px-6 rounded-full text-black font-bold bg-[#ECECEC] transition-all duration-300 hover:bg-[#FF7272] hover:text-[#FFFFFF]">
                           {card.title}
                         </button>
@@ -456,7 +481,7 @@ export default function Home() {
                       </div>
                       <div className="flex justify-center mt-4">
                         <img
-                          className="w-full max-w-[220px]"
+                          className="w-full max-w-[220px] object-contain"
                           src={card.image}
                           alt={card.title}
                         />
@@ -474,8 +499,7 @@ export default function Home() {
                   key={index}
                   onClick={() => goToSlide(index)}
                   aria-label={`Go to slide ${index + 1}`}
-                  className={`w-2.5 h-2.5 rounded-full transition-colors ${currentSlide === index ? 'bg-[#FF7272]' : 'bg-gray-300'
-                    }`}
+                  className={`w-2.5 h-2.5 rounded-full transition-colors ${currentSlide === index ? 'bg-[#FF7272]' : 'bg-gray-300'}`}
                 />
               ))}
             </div>
@@ -486,6 +510,8 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+
 
       {/* ----- SECTION 2 LANGKAH ----- */}
       {/* Header */}
@@ -531,27 +557,116 @@ export default function Home() {
       </div>
 
       {/* ----- SECTION INFORMASI ----- */}
-      <div id="teknologi" className="py-16 md:py-32"></div>
-      <div className="max-w-screen-xl mx-auto px-4 py-8 md:py-12">
+      <div id="teknologi" className="py-8 md:py-16"></div>
+      <div className="container mx-auto px-4 py-8 md:py-12">
         {/* Judul */}
-        <div className="flex flex-col items-center justify-start text-center mb-12 md:mb-24">
-          <div className="flex flex-col p-4">
-            <h1 className="text-[32px] md:text-[52px] leading-tight md:leading-[72px] font-semibold text-black mb-4">
-              Keamanan dan Kepercayaan adalah yang Utama
-            </h1>
-          </div>
-          <p className="text-gray-600 mt-2">
+        <div className="flex flex-col items-center justify-start text-center mb-8 md:mb-16">
+          <h1 className="text-[28px] md:text-[52px] leading-tight md:leading-[72px] font-semibold text-black mb-4">
+            Keamanan dan Kepercayaan adalah yang Utama
+          </h1>
+          <p className="text-gray-600 text-sm md:text-base">
             Untuk menjamin demokrasi yang aman dan dapat dipercaya kami
             menggunakan pendekatan sebagai berikut
           </p>
         </div>
 
-        {/* Konten */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+        {/* Mobile Cards Layout */}
+        <div className="md:hidden space-y-5">
+          {/* Biometric Verification Card */}
+          <div className="bg-gray-100 rounded-2xl shadow-lg shadow-[#FF7272]/10 border border-gray-100 p-5">
+            <div className="flex items-center mb-3">
+              <div className="mr-4">
+                <img
+                  src="/assets/images/Group1.png"
+                  alt="Biometric Verification"
+                  className="h-12 w-12 object-contain"
+                />
+              </div>
+              <h2 className="text-base font-bold text-black">
+                Biometric Verification
+              </h2>
+            </div>
+            <p className="text-gray-700 text-sm">
+              AmanMemilih menggunakan verifikasi biometrik berupa sidik jari
+              atau deteksi wajah yang terkoneksi dengan handphone pengguna
+              dengan privasi data yang dipastikan terjaga, untuk memastikan
+              pemilihan tidak diwakilkan.
+            </p>
+          </div>
+
+          {/* IPFS as Decentralize Storage Card */}
+          <div className="bg-gray-100 rounded-2xl shadow-lg shadow-[#FF7272]/10 border border-gray-100 p-5">
+            <div className="flex items-center mb-3">
+              <div className="mr-4">
+                <img
+                  src="/assets/images/Group3.png"
+                  alt="IPFS"
+                  className="h-12 w-12 object-contain"
+                />
+              </div>
+              <h2 className="text-base font-bold text-black">
+                IPFS as Decentralize Storage
+              </h2>
+            </div>
+            <p className="text-gray-700 text-sm">
+              IPFS (Interplanetary File Sistem) memungkinkan tidak ada data
+              yang bisa dimanipulasi dan dipastikan semua data tidak mengalami
+              kerusakan. Bahkan AmanMemilih tidak dapat memodifikasi data yang
+              ada.
+            </p>
+          </div>
+
+          {/* Secure Hash Algorithm Card */}
+          <div className="bg-gray-100 rounded-2xl shadow-lg shadow-[#FF7272]/10 border border-gray-100 p-5">
+            <div className="flex items-center mb-3">
+              <div className="mr-4">
+                <img
+                  src="/assets/images/Group2.png"
+                  alt="Secure Hash"
+                  className="h-12 w-12 object-contain"
+                />
+              </div>
+              <h2 className="text-base font-bold text-black">
+                Secure Hash Algorithm
+              </h2>
+            </div>
+            <p className="text-gray-700 text-sm">
+              Sebelum data dikirim ke blockchain, data akan terlebih dahulu di
+              hashing dengan SHA-256, walaupun data dapat diakses secara
+              publik, tetap tidak ada yang tahu isi data tersebut kecuali
+              disamakan dengan data aslinya.
+            </p>
+          </div>
+
+          {/* Blockchain as Decentralize DB Card */}
+          <div className="bg-gray-100 rounded-2xl shadow-lg shadow-[#FF7272]/10 border border-gray-100 p-5">
+            <div className="flex items-center mb-3">
+              <div className="mr-4">
+                <img
+                  src="/assets/images/Group4.png"
+                  alt="Blockchain"
+                  className="h-12 w-12 object-contain"
+                />
+              </div>
+              <h2 className="text-base font-bold text-black">
+                Blockchain as Decentralize DB
+              </h2>
+            </div>
+            <p className="text-gray-700 text-sm">
+              Blockchain adalah solusi untuk melindungi data tersebut, dengan
+              transaksi yang satu arah, memiliki nilai ID yang unik, dan
+              ledger yang dapat diakses siapa saja. Data voting akan tetap
+              orisinal, rahasia dan transparan.
+            </p>
+          </div>
+        </div>
+
+        {/* Desktop Layout */}
+        <div className="hidden md:grid md:grid-cols-2 gap-8 md:gap-10">
           {/* Biometric Verification */}
           <div className="flex flex-col md:flex-row items-center md:items-start m-2 md:m-5">
             <img
-              src="assets/images/group1.png"
+              src="assets/images/Group1.png"
               alt="Biometric Verification"
               className="w-16 h-16 md:w-20 md:h-20 mb-4 md:mb-0 md:mr-6"
             />
@@ -571,7 +686,7 @@ export default function Home() {
           {/* IPFS as Decentralize Storage */}
           <div className="flex flex-col md:flex-row items-center md:items-start m-2 md:m-5">
             <img
-              src="assets/images/group3.png"
+              src="assets/images/Group3.png"
               alt="IPFS"
               className="w-16 h-16 md:w-20 md:h-20 mb-4 md:mb-0 md:mr-6"
             />
@@ -591,7 +706,7 @@ export default function Home() {
           {/* Secure Hash Algorithm */}
           <div className="flex flex-col md:flex-row items-center md:items-start m-2 md:m-5">
             <img
-              src="assets/images/group2.png"
+              src="assets/images/Group2.png"
               alt="Secure Hash"
               className="w-16 h-16 md:w-20 md:h-20 mb-4 md:mb-0 md:mr-6"
             />
@@ -611,7 +726,7 @@ export default function Home() {
           {/* Blockchain as Decentralize DB */}
           <div className="flex flex-col md:flex-row items-center md:items-start m-2 md:m-5">
             <img
-              src="assets/images/group4.png"
+              src="assets/images/Group4.png"
               alt="Blockchain"
               className="w-16 h-16 md:w-20 md:h-20 mb-4 md:mb-0 md:mr-6"
             />
@@ -645,40 +760,90 @@ export default function Home() {
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FF7272]"></div>
         </div>
       ) : (
-        <div className="flex flex-col md:flex-row justify-center gap-6 md:space-x-8 my-6 px-4">
-          {data?.slice(0, 3).map((row) => (
-            <Link
-              href={"/berita/" + row.id}
-              key={row.id}
-              className="max-w-sm rounded overflow-hidden cursor-pointer shadow-lg hover:shadow-xl transition-shadow duration-300"
-            >
-              <img
-                className="w-full h-52 object-cover"
-                src={row.thumbnail}
-                alt={row.title}
-              />
-              <div className="px-4 py-4">
-                <div
-                  className="font-normal text-lg md:text-[20px] mb-2"
-                  style={{ fontFamily: '"Alata"' }}
-                >
-                  {truncateText(row.title, 30)}
+        <>
+          {/* Mobile view - 2 column grid with updated card layout */}
+          <div className="md:hidden grid grid-cols-2 gap-3 px-4 my-4">
+            {data?.slice(0, 4).map((row) => (
+              <Link
+                href={"/berita/" + row.id}
+                key={row.id}
+                className="rounded-lg overflow-hidden cursor-pointer shadow-md hover:shadow-lg transition-shadow duration-300 bg-white flex flex-col"
+              >
+                {/* Image container with fixed height */}
+                <div className="relative w-full h-24">
+                  <img
+                    className="w-full h-full object-cover"
+                    src={row.thumbnail}
+                    alt={row.title}
+                    loading="lazy"
+                  />
                 </div>
-                <p className="text-gray-400 text-sm md:text-base opacity-90">
-                  {truncateText(row.body, 100)}
-                </p>
-              </div>
-              <div className="flex justify-between items-center text-sm text-gray-500 px-4 py-4">
-                <span className="flex items-center">
-                  <span className="mr-2">~Admin</span>
-                </span>
-                <time className="opacity-50">
-                  {formatToHumanReadable(row.created_at)}
-                </time>
-              </div>
-            </Link>
-          ))}
-        </div>
+
+                {/* Content container */}
+                <div className="p-2 flex flex-col flex-grow">
+                  {/* Title with controlled font size */}
+                  <h3
+                    className="font-medium text-xs leading-tight mb-1 line-clamp-2 h-8"
+                    style={{ fontFamily: '"Alata"' }}
+                  >
+                    {truncateText(row.title, 40)}
+                  </h3>
+
+                  {/* Short excerpt from article - only shown if space allows */}
+                  <p className="text-gray-500 text-[10px] line-clamp-1 mb-1">
+                    {truncateText(row.body, 30)}
+                  </p>
+
+                  {/* Author and date row at bottom */}
+                  <div className="flex justify-between items-center text-[9px] text-gray-500 mt-auto pt-1 border-t border-gray-100">
+                    <span className="flex items-center">
+                      <span>~Admin</span>
+                    </span>
+                    <time className="opacity-70">
+                      {formatToHumanReadable(row.created_at).split(' ').slice(0, 2).join(' ')}
+                    </time>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Desktop view - original layout */}
+          <div className="hidden md:flex md:flex-row justify-center gap-6 md:space-x-8 my-6 px-4">
+            {data?.slice(0, 3).map((row) => (
+              <Link
+                href={"/berita/" + row.id}
+                key={row.id}
+                className="max-w-sm rounded overflow-hidden cursor-pointer shadow-lg hover:shadow-xl transition-shadow duration-300"
+              >
+                <img
+                  className="w-full h-52 object-cover"
+                  src={row.thumbnail}
+                  alt={row.title}
+                />
+                <div className="px-4 py-4">
+                  <div
+                    className="font-normal text-lg md:text-[20px] mb-2"
+                    style={{ fontFamily: '"Alata"' }}
+                  >
+                    {truncateText(row.title, 30)}
+                  </div>
+                  <p className="text-gray-400 text-sm md:text-base opacity-90">
+                    {truncateText(row.body, 100)}
+                  </p>
+                </div>
+                <div className="flex justify-between items-center text-sm text-gray-500 px-4 py-4">
+                  <span className="flex items-center">
+                    <span className="mr-2">~Admin</span>
+                  </span>
+                  <time className="opacity-50">
+                    {formatToHumanReadable(row.created_at)}
+                  </time>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </>
       )}
 
       <Footer />
