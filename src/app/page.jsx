@@ -377,7 +377,7 @@ export default function Home() {
 
                 {/* Fixed content area */}
                 <div className="flex-1 flex flex-col justify-center">
-                  <h1 className="font-semibold text-[28px] sm:text-[32px] leading-tight text-white">
+                  <h1 className="font-semibold text-[24px] leading-tight text-white">
                     Pemungutan Suara Modern dengan Keamanan Tinggi dan Fleksibilitas
                   </h1>
                   <p className="font-thin leading-7 text-[15px] sm:text-[16px] mt-4 text-white">
