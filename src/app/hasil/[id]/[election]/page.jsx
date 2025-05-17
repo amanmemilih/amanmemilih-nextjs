@@ -119,7 +119,7 @@ export default function Home({ params }) {
             <div className="flex flex-col items-center justify-start text-center mb-20">
               <div className="flex flex-col max-w-[800px] p-4">
                 <h1 className="text-[52px] leading-[72px] font-semibold text-black mb-4">
-                  Pantau hasil real count Presiden dan Wakil Presiden
+                  Pantau Hasil Real Count Presiden dan Wakil Presiden
                 </h1>
               </div>
             </div>

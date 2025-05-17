@@ -5,6 +5,8 @@ import Navbar from "@/core/components/Navbar";
 import api from "@/core/utils/api";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+const ParticlesStable = dynamic(() => import("@/components/ParticlesStable"), { ssr: false });
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -75,236 +77,57 @@ export default function Home() {
     setData(response.data.data);
   }
 
-  useEffect(() => {
-    // Dynamically import particles.js and initialize it
-    import("particles.js").then(() => {
-      if (window.particlesJS) {
-        // Desktop particles
-        window.particlesJS("particles-js", {
-          particles: {
-            number: {
-              value: 80,
-              density: {
-                enable: true,
-                value_area: 800,
-              },
-            },
-            color: {
-              value: "#3A3A3A",
-            },
-            shape: {
-              type: "circle",
-              stroke: {
-                width: 0,
-                color: "#000000",
-              },
-              polygon: {
-                nb_sides: 5,
-              },
-              image: {
-                src: "img/github.svg",
-                width: 100,
-                height: 100,
-              },
-            },
-            opacity: {
-              value: 0.5,
-              random: false,
-              anim: {
-                enable: false,
-                speed: 1,
-                opacity_min: 0.1,
-                sync: false,
-              },
-            },
-            size: {
-              value: 3,
-              random: true,
-              anim: {
-                enable: false,
-                speed: 40,
-                size_min: 0.1,
-                sync: false,
-              },
-            },
-            line_linked: {
-              enable: true,
-              distance: 150,
-              color: "#3A3A3A",
-              opacity: 0.4,
-              width: 1,
-            },
-            move: {
-              enable: true,
-              speed: 6,
-              direction: "none",
-              random: false,
-              straight: false,
-              out_mode: "out",
-              bounce: false,
-              attract: {
-                enable: false,
-                rotateX: 600,
-                rotateY: 1200,
-              },
-            },
-          },
-          interactivity: {
-            detect_on: "canvas",
-            events: {
-              onhover: {
-                enable: true,
-                mode: "repulse",
-              },
-              onclick: {
-                enable: true,
-                mode: "push",
-              },
-              resize: true,
-            },
-            modes: {
-              grab: {
-                distance: 400,
-                line_linked: {
-                  opacity: 1,
-                },
-              },
-              bubble: {
-                distance: 400,
-                size: 40,
-                duration: 2,
-                opacity: 8,
-                speed: 3,
-              },
-              repulse: {
-                distance: 200,
-                duration: 0.4,
-              },
-              push: {
-                particles_nb: 4,
-              },
-              remove: {
-                particles_nb: 2,
-              },
-            },
-          },
-          retina_detect: true,
-        });
+  // Konfigurasi Particles Desktop
+  const particlesOptionsDesktop = {
+    preset: "links",
+    background: {
+      color: { value: "#fff" },
+    },
+    particles: {
+      color: { value: "#FF7272" },
+      links: {
+        enable: true,
+        color: "#FF7272",
+        distance: 150,
+        opacity: 0.5,
+        width: 1.5,
+      },
+      move: { enable: true, speed: 2 },
+      number: { value: 60 },
+      opacity: { value: 0.7 },
+      shape: { type: "circle" },
+      size: { value: 4 },
+    },
+    detectRetina: true,
+  };
 
-        // Mobile particles with same config
-        window.particlesJS("particles-js-mobile", {
-          particles: {
-            number: {
-              value: 80,
-              density: {
-                enable: true,
-                value_area: 800,
-              },
-            },
-            color: {
-              value: "#3A3A3A",
-            },
-            shape: {
-              type: "circle",
-              stroke: {
-                width: 0,
-                color: "#000000",
-              },
-              polygon: {
-                nb_sides: 5,
-              },
-              image: {
-                src: "img/github.svg",
-                width: 100,
-                height: 100,
-              },
-            },
-            opacity: {
-              value: 0.5,
-              random: false,
-              anim: {
-                enable: false,
-                speed: 1,
-                opacity_min: 0.1,
-                sync: false,
-              },
-            },
-            size: {
-              value: 3,
-              random: true,
-              anim: {
-                enable: false,
-                speed: 40,
-                size_min: 0.1,
-                sync: false,
-              },
-            },
-            line_linked: {
-              enable: true,
-              distance: 150,
-              color: "#3A3A3A",
-              opacity: 0.4,
-              width: 1,
-            },
-            move: {
-              enable: true,
-              speed: 6,
-              direction: "none",
-              random: false,
-              straight: false,
-              out_mode: "out",
-              bounce: false,
-              attract: {
-                enable: false,
-                rotateX: 600,
-                rotateY: 1200,
-              },
-            },
-          },
-          interactivity: {
-            detect_on: "canvas",
-            events: {
-              onhover: {
-                enable: true,
-                mode: "repulse",
-              },
-              onclick: {
-                enable: true,
-                mode: "push",
-              },
-              resize: true,
-            },
-            modes: {
-              grab: {
-                distance: 400,
-                line_linked: {
-                  opacity: 1,
-                },
-              },
-              bubble: {
-                distance: 400,
-                size: 40,
-                duration: 2,
-                opacity: 8,
-                speed: 3,
-              },
-              repulse: {
-                distance: 200,
-                duration: 0.4,
-              },
-              push: {
-                particles_nb: 4,
-              },
-              remove: {
-                particles_nb: 2,
-              },
-            },
-          },
-          retina_detect: true,
-        });
-      }
-    });
-  }, []);
+  // Konfigurasi Particles Mobile
+  const particlesOptionsMobile = {
+    preset: "links",
+    background: { color: { value: "#fff" } },
+    particles: {
+      color: { value: "#3A3A3A" },
+      links: {
+        enable: true,
+        color: "#3A3A3A",
+        distance: 100,
+        opacity: 0.4,
+        width: 1,
+      },
+      move: { enable: true, speed: 1.5 },
+      number: { value: 40 },
+      opacity: { value: 0.6 },
+      shape: { type: "circle" },
+      size: { value: 3 },
+    },
+    detectRetina: true,
+  };
+
+  // Handler untuk inisialisasi engine tsparticles
+  const particlesInit = async (engine) => {
+    await loadFull(engine);
+    console.log('tsparticles engine loaded');
+  };
 
   function truncateText(htmlString, length) {
     // Menghapus semua tag HTML
@@ -327,8 +150,8 @@ export default function Home() {
     <>
       <Navbar />
 
-      {/* Hero Content */}
-      <div className="relative">
+      {/* Hero Content + Particles Desktop */}
+      <div className="relative min-h-screen w-full" style={{ minHeight: '100vh', border: '2px solid red' }}>
         {/* Desktop Hero Section */}
         <div className="hidden md:block container mx-auto pt-8 px-4 mt-[36px]">
           <div className="grid grid-cols-2 gap-8 p-8 place-items-center">
@@ -403,13 +226,32 @@ export default function Home() {
         </div>
 
         {/* Particle.js Background - Desktop only */}
-        <div id="particles-js" className="hidden md:block absolute inset-0 z-[-1] overflow-hidden opacity-50"></div>
+        <div
+          className="hidden md:block absolute top-0 right-0 z-[-1] w-1/3 min-h-screen h-full overflow-hidden"
+          style={{ position: 'absolute', right: 0, top: 0, bottom: 0, minHeight: '100vh', height: '100%' }}
+        >
+          <div style={{ position: 'absolute', top: 0, left: 0, color: 'red', zIndex: 1000 }} id="particles-fallback-desktop"></div>
+          <img
+            src="/assets/images/particle.svg"
+            alt="Particle Background"
+            className="w-full h-full object-cover"
+            style={{ position: 'absolute', top: 0, right: 0, width: '100%', height: '100%', zIndex: -1 }}
+          />
+        </div>
       </div>
 
       {/* SECTION CARD INFO with Particles.js as background on mobile */}
-      <div className="relative">
+      <div className="relative min-h-[500px] md:min-h-0 bg-white" style={{ minHeight: '500px', height: '500px', border: '2px solid red' }}>
         {/* Particle.js Background - Mobile only (as background for this section) */}
-        <div id="particles-js-mobile" className="block md:hidden absolute inset-0 z-[-1] overflow-hidden opacity-50"></div>
+        <div className="block md:hidden absolute inset-0 z-[-1] overflow-hidden opacity-70 min-h-[500px]" style={{ minHeight: '500px', height: '500px' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, color: 'red', zIndex: 1000 }} id="particles-fallback-mobile"></div>
+          <img
+            src="/assets/images/particle.svg"
+            alt="Particle Background"
+            className="w-full h-full object-cover opacity-70"
+            style={{ position: 'absolute', inset: 0, minHeight: '500px', height: '500px', zIndex: -1 }}
+          />
+        </div>
 
         {/* Card Info Content */}
         <div id="tentang" className="flex flex-col md:flex-row items-center justify-center md:space-x-8 px-4 py-16 md:my-24 md:mb-32">
@@ -763,7 +605,7 @@ export default function Home() {
         <>
           {/* Mobile view - 2 column grid with updated card layout */}
           <div className="md:hidden grid grid-cols-2 gap-3 px-4 my-4">
-            {data?.slice(0, 4).map((row) => (
+            {data && data.length > 0 ? data.slice(0, 4).map((row) => (
               <Link
                 href={"/berita/" + row.id}
                 key={row.id}
@@ -805,12 +647,16 @@ export default function Home() {
                   </div>
                 </div>
               </Link>
-            ))}
+            )) : (
+              <div className="col-span-2 text-center py-6 text-gray-500">
+                Belum ada berita tersedia.
+              </div>
+            )}
           </div>
 
           {/* Desktop view - original layout */}
           <div className="hidden md:flex md:flex-row justify-center gap-6 md:space-x-8 my-6 px-4">
-            {data?.slice(0, 3).map((row) => (
+            {data && data.length > 0 ? data.slice(0, 3).map((row) => (
               <Link
                 href={"/berita/" + row.id}
                 key={row.id}
@@ -841,7 +687,11 @@ export default function Home() {
                   </time>
                 </div>
               </Link>
-            ))}
+            )) : (
+              <div className="text-center py-6 text-gray-500">
+                Belum ada berita tersedia.
+              </div>
+            )}
           </div>
         </>
       )}
