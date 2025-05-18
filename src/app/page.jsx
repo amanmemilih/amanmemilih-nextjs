@@ -43,9 +43,18 @@ export default function Home() {
     <>
       <Navbar />
 
-      {/* Content */}
-      <div className="md:container md:mx-auto pt-8 mt-[36px]">
-        <div className="grid grid-cols-2 p-8 place-items-center">
+      {/* Hero Section */}
+      <div className="relative w-full pt-8 mt-[36px] overflow-hidden">
+        {/* Video Background */}
+        <video
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          src="/assets/video/particle-video.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 p-8 place-items-center w-full max-w-none">
           <div className="gap-y-35">
             <p className="font-semibold text-[60px] md:text-[40]">
               Pemungutan Suara Modern dengan Keamanan Tinggi dan Fleksibilitas
@@ -86,53 +95,30 @@ export default function Home() {
           dan mengeliminasi kemungkinan bocornya suatu informasi.
         </p>
       </div>
-      {/* Container Box */}
-      <div className="container mx-auto flex flex-row mb-4 justify-between space-x-4">
-        {/* Box 1 */}
-        <div className="king container flex flex-col justify-center box rounded-2xl shadow-2xl shadow-[#FF7272]/10 border-2 border-gray-100">
-          <div className="px-12 py-12 flex flex-col justify-center">
-            <button className="mx-24 py-4 px-6 rounded-full text-black font-bold bg-[#ECECEC] transition-all duration-300 hover:bg-[#FF7272] hover:text-[#FFFFFF]">
-              AmanRekap
-            </button>
-            <p className="my-4 text-center">
-              Memastikan petugas hanya mengunggah surat suara melalui aplikasi
-              ini yang langsung terhubung ke sistem kami, sehingga masyarakat
-              dapat melihat surat suara setiap daerah di Indonesia.
-            </p>
-          </div>
-          <div className="flex justify-center">
-            <img className=" " src="assets/images/p1.png" alt="demoapp" />
-          </div>
+      <div className="flex justify-center gap-10 my-24 mb-32 px-2">
+        {/* Card 1 */}
+        <div className="group flex flex-col items-center bg-white rounded-3xl shadow-lg border border-gray-100 px-10 py-8 max-w-sm w-full transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+          <button className="mb-6 px-8 py-2 rounded-full text-black font-bold text-lg bg-[#ECECEC] transition-all duration-300 group-hover:bg-[#FF7272] group-hover:text-white cursor-default shadow-md">AmanRekap</button>
+          <p className="text-center text-base text-gray-700 mb-8">
+            Memastikan petugas hanya mengunggah surat suara melalui aplikasi ini yang langsung terhubung ke sistem kami, sehingga masyarakat dapat melihat surat suara setiap daerah di Indonesia.
+          </p>
+          <img src="assets/images/p1.png" alt="Mockup AmanRekap" className="w-56 h-auto mt-auto" />
         </div>
-        {/* Box 2 */}
-        <div className="king container flex flex-col justify-center box rounded-2xl shadow-2xl shadow-[#FF7272]/10 border-2 border-gray-100">
-          <div className="px-8 py-12 flex flex-col justify-center">
-            <button className="mx-24 py-4 px-6 rounded-full text-black font-bold bg-[#ECECEC] transition-all duration-300 hover:bg-[#FF7272] hover:text-[#FFFFFF]">
-              AmanHasil
-            </button>
-            <p className="my-7 text-center">
-              Memusatkan segala informasi dari sumber sumber yang kredibel, hal
-              ini juga mencegah kamu mengurangi resiko informasi hoax.
-            </p>
-          </div>
-          <div className="flex justify-center ">
-            <img className=" " src="assets/images/p2.png" alt="demoapp" />
-          </div>
+        {/* Card 2 */}
+        <div className="group flex flex-col items-center bg-white rounded-3xl shadow-lg border border-gray-100 px-10 py-8 max-w-sm w-full transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+          <button className="mb-6 px-8 py-2 rounded-full text-black font-bold text-lg bg-[#ECECEC] transition-all duration-300 group-hover:bg-[#FF7272] group-hover:text-white cursor-default shadow-md">AmanHasil</button>
+          <p className="text-center text-base text-gray-700 mb-8">
+            Memusatkan segala informasi dari sumber sumber yang kredibel, hal ini juga mencegah kamu mengurangi resiko informasi hoax.
+          </p>
+          <img src="assets/images/p2.png" alt="Mockup AmanHasil" className="w-56 h-auto mt-auto" />
         </div>
-        {/* Box 3 */}
-        <div className="king container flex flex-col justify-center box rounded-2xl shadow-2xl shadow-[#FF7272]/10 border-2 border-gray-100">
-          <div className="px-12 py-12 flex flex-col justify-center">
-            <button className="mx-24 py-4 px-6 rounded-full text-black font-bold bg-[#ECECEC] transition-all duration-300 hover:bg-[#FF7272] hover:text-[#FFFFFF]">
-              AmanLapor
-            </button>
-            <p className="my-7 text-center">
-              Tempat pengaduan atau bertanya mengenai proses vote dari setiap
-              VotingRoom. berinteraksi dengan Smartchat, atau guide book.
-            </p>
-          </div>
-          <div className="flex justify-center">
-            <img className=" " src="assets/images/p2.png" alt="demoapp" />
-          </div>
+        {/* Card 3 */}
+        <div className="group flex flex-col items-center bg-white rounded-3xl shadow-lg border border-gray-100 px-10 py-8 max-w-sm w-full transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+          <button className="mb-6 px-8 py-2 rounded-full text-black font-bold text-lg bg-[#ECECEC] transition-all duration-300 group-hover:bg-[#FF7272] group-hover:text-white cursor-default shadow-md">AmanLapor</button>
+          <p className="text-center text-base text-gray-700 mb-8">
+            Tempat pengaduan atau bertanya mengenai proses vote dari setiap VotingRoom. berinteraksi dengan Smartchat, atau guide book.
+          </p>
+          <img src="assets/images/p3.png" alt="Mockup AmanLapor" className="w-56 h-auto mt-auto" />
         </div>
       </div>
       {/* ----- SECTION 2 LANGKAH ----- */}
