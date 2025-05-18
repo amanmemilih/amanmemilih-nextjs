@@ -1,14 +1,22 @@
 "use client";
 
-import Footer from "@/core/components/Footer";
+import FooterMobile from '@/core/components/FooterMobile';
+import FooterDesktop from '@/core/components/FooterDesktop';
 import Navbar from "@/core/components/Navbar";
 import api from "@/core/utils/api";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import HeroMobile from '@/core/components/HeroMobile';
+import HeroDesktop from '@/core/components/HeroDesktop';
+import CardInfoMobile from '@/core/components/CardInfoMobile';
+import CardInfoDesktop from '@/core/components/CardInfoDesktop';
+import InformasiMobile from '@/core/components/InformasiMobile';
+import InformasiDesktop from '@/core/components/InformasiDesktop';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
+  const isDesktop = useIsDesktop();
 
   useEffect(() => {
     fetchData();
@@ -39,41 +47,21 @@ export default function Home() {
     return date.toLocaleDateString("en-GB", options);
   }
 
+  function useIsDesktop() {
+    const [isDesktop, setIsDesktop] = useState(false);
+    useEffect(() => {
+      const check = () => setIsDesktop(window.innerWidth >= 768);
+      check();
+      window.addEventListener('resize', check);
+      return () => window.removeEventListener('resize', check);
+    }, []);
+    return isDesktop;
+  }
+
   return (
     <>
       <Navbar />
-
-      {/* Hero Section */}
-      <div className="relative w-full pt-8 mt-[36px] overflow-hidden">
-        {/* Video Background */}
-        <video
-          className="absolute inset-0 w-full h-full object-cover z-0"
-          src="/assets/video/particle-video.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-        />
-        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 p-8 place-items-center w-full max-w-none">
-          <div className="gap-y-35">
-            <p className="font-semibold text-[60px] md:text-[40]">
-              Pemungutan Suara Modern dengan Keamanan Tinggi dan Fleksibilitas
-            </p>
-            <p className="font-normal leading-8 text-[20px] md:text-[10] mt-12">
-              AmanMemilih hadir sebagai solusi dari pengembangan sistem
-              rekapitulasi suara menggunakan teknologi Web 3.0, dengan ini hasil
-              rekapitulasi suara tidak bisa dimanipulasi oleh pihak ketiga.
-            </p>
-            <button className="font-semibold text-[20] bg-[linear-gradient(5deg,_#ffd596_0%,_#ff7272_43%)] text-white px-8 py-4 rounded-lg mt-12 z-10 relative">
-              {/* bg-gradient-to-b from-[#FF7272] from-60% to-[#FFD596] */}
-              Unduh Sekarang
-            </button>
-          </div>
-          <div className="items-center">
-            <img src="assets/images/Illustration.png" alt="" />
-          </div>
-        </div>
-      </div>
+      {isDesktop ? <HeroDesktop /> : <HeroMobile />}
       {/* Particle.js Background */}
       <div
         id="particles-js"
@@ -81,187 +69,54 @@ export default function Home() {
       ></div>
       <div id="tentang"></div>
       {/* ----- SECTION CARD INFO ----- */}
-      <div className="flex items-center justify-center space-x-8 my-24 mb-32 px-2">
-        <span className="text-black text-[44px] font-semibold mr-[-32px]">
-          Aman
-        </span>
-        <span className="text-[#FF7272] text-[44px] font-semibold">
-          Memilih
-        </span>
-        <p className="text-gray-700 text-lg max-w-4xl">
-          Aplikasi berbasis teknologi blockchain dengan sistem yang tidak
-          terpusat dan menjamin keamanan data, terutama data suara dan data
-          pengguna. Kami menjaga informasi, menjamin integritas data, keamanan,
-          dan mengeliminasi kemungkinan bocornya suatu informasi.
-        </p>
-      </div>
-      <div className="flex justify-center gap-10 my-24 mb-32 px-2">
-        {/* Card 1 */}
-        <div className="group flex flex-col items-center bg-white rounded-3xl shadow-lg border border-gray-100 px-10 py-8 max-w-sm w-full transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-          <button className="mb-6 px-8 py-2 rounded-full text-black font-bold text-lg bg-[#ECECEC] transition-all duration-300 group-hover:bg-[#FF7272] group-hover:text-white cursor-default shadow-md">AmanRekap</button>
-          <p className="text-center text-base text-gray-700 mb-8">
-            Memastikan petugas hanya mengunggah surat suara melalui aplikasi ini yang langsung terhubung ke sistem kami, sehingga masyarakat dapat melihat surat suara setiap daerah di Indonesia.
-          </p>
-          <img src="assets/images/p1.png" alt="Mockup AmanRekap" className="w-56 h-auto mt-auto" />
-        </div>
-        {/* Card 2 */}
-        <div className="group flex flex-col items-center bg-white rounded-3xl shadow-lg border border-gray-100 px-10 py-8 max-w-sm w-full transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-          <button className="mb-6 px-8 py-2 rounded-full text-black font-bold text-lg bg-[#ECECEC] transition-all duration-300 group-hover:bg-[#FF7272] group-hover:text-white cursor-default shadow-md">AmanHasil</button>
-          <p className="text-center text-base text-gray-700 mb-8">
-            Memusatkan segala informasi dari sumber sumber yang kredibel, hal ini juga mencegah kamu mengurangi resiko informasi hoax.
-          </p>
-          <img src="assets/images/p2.png" alt="Mockup AmanHasil" className="w-56 h-auto mt-auto" />
-        </div>
-        {/* Card 3 */}
-        <div className="group flex flex-col items-center bg-white rounded-3xl shadow-lg border border-gray-100 px-10 py-8 max-w-sm w-full transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-          <button className="mb-6 px-8 py-2 rounded-full text-black font-bold text-lg bg-[#ECECEC] transition-all duration-300 group-hover:bg-[#FF7272] group-hover:text-white cursor-default shadow-md">AmanLapor</button>
-          <p className="text-center text-base text-gray-700 mb-8">
-            Tempat pengaduan atau bertanya mengenai proses vote dari setiap VotingRoom. berinteraksi dengan Smartchat, atau guide book.
-          </p>
-          <img src="assets/images/p3.png" alt="Mockup AmanLapor" className="w-56 h-auto mt-auto" />
-        </div>
-      </div>
+      {isDesktop ? <CardInfoDesktop /> : <CardInfoMobile />}
       {/* ----- SECTION 2 LANGKAH ----- */}
       {/* Header */}
       <div id="cara-kerja"></div>
-      <div className="flex justify-center">
-        <div className="flex items-center justify-center rounded-md text-center p-20">
-          <h1 className="leading-normal text-black text-[52px] font-semibold mb-4">
+      <div className="flex justify-center w-full">
+        <div className="flex items-center justify-center rounded-md text-center px-4 md:px-8 lg:px-20 py-8 md:py-20 w-full max-w-2xl md:max-w-4xl lg:max-w-6xl">
+          <h1 className="leading-normal text-black text-2xl sm:text-3xl md:text-[40px] lg:text-[52px] font-semibold mb-4 w-full">
             2 Langkah agar AmanMemilih
           </h1>
         </div>
       </div>
       {/* Konten */}
-      <div className="flex justify-center space-x-16">
-        <div className="flex flex-col items-center w-96 h-auto p-8 pt-20 mt-24 bg-white rounded-lg shadow-2xl shadow-[#FF7272]/10 scale-150 mr-48">
+      <div className="flex flex-col md:flex-row justify-center items-center md:space-x-8 lg:space-x-16 gap-6 md:gap-0 w-full max-w-2xl md:max-w-4xl lg:max-w-6xl mx-auto px-2 md:px-4 lg:px-0">
+        <div className="flex flex-col items-center w-full md:w-1/2 h-auto p-6 md:p-8 pt-10 md:pt-20 mt-8 md:mt-24 bg-white rounded-lg shadow-2xl shadow-[#FF7272]/10 scale-100 md:scale-105 md:mr-0 lg:mr-12 transition-all duration-300">
           <img
             src="assets/images/undraw_shared_workspace_re_3gsu 1.png"
             alt="Pantau hasil real count"
-            className="w-full h-40 object-contain"
+            className="w-full max-w-[220px] h-32 md:h-40 object-contain"
           />
-          <h2 className="text-2xl font-bold mt-8 text-left w-full">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold mt-6 md:mt-8 text-left w-full">
             Pantau hasil real count
           </h2>
-          <p className="text-base text-gray-600 mt-4">
-            Ketahui hasil rekapitulasi suara dari pasangan calon pilihan kamu
-            secara real-time
+          <p className="text-sm md:text-base text-gray-600 mt-2 md:mt-4">
+            Ketahui hasil rekapitulasi suara dari pasangan calon pilihan kamu secara real-time
           </p>
         </div>
-        <div className="flex flex-col items-center w-96 h-auto p-8 bg-white mt-24 bg-opacity-30 backdrop-blur-md rounded-lg shadow-2xl shadow-[#FF7272]/10 scale-150">
+        <div className="flex flex-col items-center w-full md:w-1/2 h-auto p-6 md:p-8 bg-white mt-8 md:mt-24 bg-opacity-30 backdrop-blur-md rounded-lg shadow-2xl shadow-[#FF7272]/10 scale-100 md:scale-105 transition-all duration-300">
           <img
             src="assets/images/illustration2.png"
             alt="Pantau hasil real count"
-            className="w-48 h-48"
+            className="w-32 md:w-48 h-32 md:h-48"
           />
-          <h2 className="text-2xl font-bold mt-10 text-left w-full">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold mt-6 md:mt-10 text-left w-full">
             Laporkan
           </h2>
-          <p className="text-base text-gray-600 mt-4">
-            Jika terdapat kesalahan pada hasil rekapitulasi suara, segera
-            laporkan ke Bawaslu setempat.
+          <p className="text-sm md:text-base text-gray-600 mt-2 md:mt-4">
+            Jika terdapat kesalahan pada hasil rekapitulasi suara, segera laporkan ke Bawaslu setempat.
           </p>
         </div>
       </div>
       {/* ----- SECTION INFORMASI ----- */}
       <div id="teknologi"></div>
-      <div className="max-w-screen-xl mx-auto py-12 mt-32">
-        {/* Judul */}
-        <div className="flex flex-col items-center justify-start text-center mb-24">
-          <div className="flex flex-col max-w-[800px] p-4">
-            <h1 className="text-[52px] leading-[72px] font-semibold text-black mb-4">
-              Keamanan dan Kepercayaan adalah yang Utama
-            </h1>
-          </div>
-          <p className="text-gray-600 mt-2">
-            Untuk menjamin demokrasi yang aman dan dapat dipercaya kami
-            menggunakan pendekatan sebagai berikut
-          </p>
-        </div>
-        {/* Konten */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {/* Biometric Verification */}
-          <div className="flex items-start m-5">
-            <img
-              src="assets/images/group1.png"
-              alt="Biometric Verification"
-              className="w-20 h-20 mr-6"
-            />
-            <div>
-              <h2 className="text-xl font-bold text-black mb-2">
-                Biometric Verification
-              </h2>
-              <p className="text-gray-8000">
-                AmanMemilih menggunakan verifikasi biometrik berupa sidik jari
-                atau deteksi wajah yang terkoneksi dengan handphone pengguna
-                dengan privasi data yang dipastikan terjaga, untuk memastikan
-                pemilihan tidak diwakilkan.
-              </p>
-            </div>
-          </div>
-          {/* IPFS as Decentralize Storage */}
-          <div className="flex items-start m-5">
-            <img
-              src="assets/images/group3.png"
-              alt="IPFS"
-              className="w-20 h-20 mr-6"
-            />
-            <div>
-              <h2 className="text-xl font-bold text-black mb-2">
-                IPFS as Decentralize Storage
-              </h2>
-              <p className="text-gray-8000">
-                IPFS (Interplanetary File Sistem) memungkinkan tidak ada data
-                yang bisa dimanipulasi dan dipastikan semua data tidak mengalami
-                kerusakan. Bahkan AmanMemilih tidak dapat memodifikasi data yang
-                ada.
-              </p>
-            </div>
-          </div>
-          {/* Secure Hash Algorithm */}
-          <div className="flex items-start m-5">
-            <img
-              src="assets/images/group2.png"
-              alt="Secure Hash"
-              className="w-20 h-20 mr-6"
-            />
-            <div>
-              <h2 className="text-xl font-bold text-black mb-2">
-                Secure Hash Algorithm
-              </h2>
-              <p className="text-gray-8000">
-                Sebelum data dikirim ke blockchain, data akan terlebih dahulu di
-                hashing dengan SHA-256, walaupun data dapat diakses secara
-                publik, tetap tidak ada yang tahu isi data tersebut kecuali
-                disamakan dengan data aslinya.
-              </p>
-            </div>
-          </div>
-          {/* Blockchain as Decentralize DB */}
-          <div className="flex items-start m-5">
-            <img
-              src="assets/images/group4.png"
-              alt="Blockchain"
-              className="w-20 h-20 mr-6"
-            />
-            <div>
-              <h2 className="text-xl font-bold text-black mb-2">
-                Blockchain as Decentralize DB
-              </h2>
-              <p className="text-gray-8000">
-                Blockchain adalah solusi untuk melindungi data tersebut, dengan
-                transaksi yang satu arah, memiliki nilai ID yang unik, dan
-                ledger yang dapat diakses siapa saja. Data voting akan tetap
-                orisinal, rahasia dan transparan.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      {isDesktop ? <InformasiDesktop /> : <InformasiMobile />}
       {/* ----- SECTION BERITA ----- */}
       <div id="berita"></div>
-      <div className="flex justify-center">
-        <div className="flex items-center justify-center rounded-md text-center p-12">
-          <h1 className="leading-normal text-black text-5xl font-semibold">
+      <div className="flex justify-center w-full">
+        <div className="flex items-center justify-center rounded-md text-center px-4 md:px-12 w-full max-w-2xl md:max-w-4xl lg:max-w-6xl">
+          <h1 className="leading-normal text-black text-2xl sm:text-3xl md:text-5xl font-semibold w-full">
             Berita
           </h1>
         </div>
@@ -269,30 +124,30 @@ export default function Home() {
       {isLoading ? (
         ""
       ) : (
-        <div className="flex justify-center space-x-8 my-6">
-          {data?.slice(0, 3).map((row) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 md:gap-8 justify-center items-stretch my-6 px-2 md:px-4 w-full max-w-2xl md:max-w-4xl lg:max-w-5xl xl:max-w-6xl mx-auto">
+          {data?.slice(0, 4).map((row) => (
             <Link
               href={"/berita/" + row.id}
               key={row.id}
-              className="max-w-sm rounded overflow-hidden cursor-pointer"
+              className="max-w-full md:max-w-sm rounded overflow-hidden cursor-pointer bg-white shadow-md border border-gray-100 flex flex-col transition-all duration-300 hover:scale-105"
             >
               <img
-                className="w-full"
+                className="w-full h-40 md:h-48 object-cover"
                 src={row.thumbnail}
                 alt="Sunset in the mountains"
               />
-              <div className="px-2 py-4">
+              <div className="px-2 py-4 flex-1 flex flex-col justify-between">
                 <div
-                  className="font-normal text-[20px] mb-2"
+                  className="font-normal text-base md:text-[20px] mb-2"
                   style={{ fontFamily: '"Alata"' }}
                 >
                   {truncateText(row.title, 30)}
                 </div>
-                <p className="text-gray-400 text-base opacity-90">
+                <p className="text-gray-400 text-sm md:text-base opacity-90">
                   {truncateText(row.body, 120)}
                 </p>
               </div>
-              <div className="flex justify-between items-center text-sm text-gray-500 px-2 py-4">
+              <div className="flex justify-between items-center text-xs md:text-sm text-gray-500 px-2 py-4">
                 <span className="flex items-center">
                   <span className="mr-2">~Admin</span>
                 </span>
@@ -304,7 +159,8 @@ export default function Home() {
           ))}
         </div>
       )}
-      <Footer />
+      {/* Footer */}
+      {isDesktop ? <FooterDesktop /> : <FooterMobile />}
     </>
   );
 }
