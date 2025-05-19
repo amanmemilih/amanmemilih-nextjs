@@ -19,7 +19,7 @@ export default function InformasiDesktop() {
                 {/* Biometric Verification */}
                 <div className="flex items-start m-2 md:m-5">
                     <img
-                        src="assets/images/group1.png"
+                        src="https://amanmemilih-backend.motionlaboratory.com/storage/Group1.png"
                         alt="Biometric Verification"
                         className="w-12 h-12 md:w-20 md:h-20 mr-4 md:mr-6"
                     />
@@ -35,7 +35,7 @@ export default function InformasiDesktop() {
                 {/* IPFS as Decentralize Storage */}
                 <div className="flex items-start m-2 md:m-5">
                     <img
-                        src="assets/images/group3.png"
+                        src="https://amanmemilih-backend.motionlaboratory.com/storage/Group3.png"
                         alt="IPFS"
                         className="w-12 h-12 md:w-20 md:h-20 mr-4 md:mr-6"
                     />
@@ -51,7 +51,7 @@ export default function InformasiDesktop() {
                 {/* Secure Hash Algorithm */}
                 <div className="flex items-start m-2 md:m-5">
                     <img
-                        src="assets/images/group2.png"
+                        src="https://amanmemilih-backend.motionlaboratory.com/storage/Group2.png"
                         alt="Secure Hash"
                         className="w-12 h-12 md:w-20 md:h-20 mr-4 md:mr-6"
                     />
@@ -67,7 +67,7 @@ export default function InformasiDesktop() {
                 {/* Blockchain as Decentralize DB */}
                 <div className="flex items-start m-2 md:m-5">
                     <img
-                        src="assets/images/group4.png"
+                        src="https://amanmemilih-backend.motionlaboratory.com/storage/Group4.png"
                         alt="Blockchain"
                         className="w-12 h-12 md:w-20 md:h-20 mr-4 md:mr-6"
                     />
