@@ -114,51 +114,6 @@ export default function Home() {
       {isDesktop ? <InformasiDesktop /> : <InformasiMobile />}
       {/* ----- SECTION BERITA ----- */}
       <div id="berita"></div>
-      <div className="flex justify-center w-full">
-        <div className="flex items-center justify-center rounded-md text-center px-4 md:px-12 w-full max-w-2xl md:max-w-4xl lg:max-w-6xl">
-          <h1 className="leading-normal text-black text-2xl sm:text-3xl md:text-5xl font-semibold w-full">
-            Berita
-          </h1>
-        </div>
-      </div>
-      {isLoading ? (
-        ""
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 md:gap-8 justify-center items-stretch my-6 px-2 md:px-4 w-full max-w-2xl md:max-w-4xl lg:max-w-5xl xl:max-w-6xl mx-auto">
-          {data?.slice(0, 4).map((row) => (
-            <Link
-              href={"/berita/" + row.id}
-              key={row.id}
-              className="max-w-full md:max-w-sm rounded overflow-hidden cursor-pointer bg-white shadow-md border border-gray-100 flex flex-col transition-all duration-300 hover:scale-105"
-            >
-              <img
-                className="w-full h-40 md:h-48 object-cover"
-                src={row.thumbnail}
-                alt="Sunset in the mountains"
-              />
-              <div className="px-2 py-4 flex-1 flex flex-col justify-between">
-                <div
-                  className="font-normal text-base md:text-[20px] mb-2"
-                  style={{ fontFamily: '"Alata"' }}
-                >
-                  {truncateText(row.title, 30)}
-                </div>
-                <p className="text-gray-400 text-sm md:text-base opacity-90">
-                  {truncateText(row.body, 120)}
-                </p>
-              </div>
-              <div className="flex justify-between items-center text-xs md:text-sm text-gray-500 px-2 py-4">
-                <span className="flex items-center">
-                  <span className="mr-2">~Admin</span>
-                </span>
-                <time className="opacity-50">
-                  {formatToHumanReadable(row.created_at)}
-                </time>
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
       {/* Footer */}
       {isDesktop ? <FooterDesktop /> : <FooterMobile />}
     </>
