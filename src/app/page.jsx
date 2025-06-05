@@ -5,8 +5,9 @@ import Navbar from "@/core/components/Navbar";
 import api from "@/core/utils/api";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Script from "next/script";
 
-export default function Home() {
+const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -63,195 +64,68 @@ export default function Home() {
     }
   };
 
-
-
+  // Inisialisasi particles.js setelah komponen mount
   useEffect(() => {
-    // Dynamically import particles.js and initialize it
-    import("particles.js").then(() => {
-      if (window.particlesJS) {
-        // Desktop particles - Diubah untuk hanya berada di kanan dengan efek blur
-        window.particlesJS('particles-js', {
-          particles: {
-            number: {
-              value: 30, // Mengurangi jumlah partikel agar tidak terlalu padat
-              density: { enable: true, value_area: 800 } 
-            },
-            color: { value: '#FF7272' }, // Warna sesuai dengan tema (merah muda)
-            shape: {
-              type: 'circle',
-              stroke: { width: 0, color: '#000000' },
-              polygon: { nb_sides: 5 }
-            },
-            opacity: {
-              value: 0.2, // Mengurangi opacity lebih banyak untuk efek blur
-              random: true, // Memberikan variasi opacity
-              anim: { enable: false }
-            },
-            size: {
-              value: 3,
-              random: true,
-              anim: { enable: false }
-            },
-            line_linked: {
-              enable: true,
-              distance: 150,
-              color: '#FF7272', // Warna garis sesuai tema
-              opacity: 0.15, // Opacity garis dikurangi agar lebih subtle
-              width: 1
-            },
-            move: {
-              enable: true,
-              speed: 1.5, // Kecepatan dikurangi agar lebih tenang
-              direction: 'none',
-              random: true, // Pergerakan random memberi kesan lebih dinamis
-              straight: false,
-              out_mode: 'out',
-              bounce: false
-            }
+    if (typeof window !== "undefined" && window.particlesJS) {
+      window.particlesJS("particles-js", {
+        particles: {
+          number: {
+            value: 80,
+            density: { enable: true, value_area: 800 },
           },
-          interactivity: {
-            detect_on: 'canvas',
-            events: {
-              onhover: {
-                enable: true,
-                mode: 'bubble' // Efek hover bubble untuk interaksi yang lembut
-              },
-              onclick: {
-                enable: true,
-                mode: 'repulse' // Efek klik yang membuat partikel menjauh
-              },
-              resize: true
-            },
-            modes: {
-              bubble: {
-                distance: 200,
-                size: 6,
-                duration: 2,
-                opacity: 0.3,
-                speed: 3
-              },
-              repulse: {
-                distance: 200,
-                duration: 0.4
-              }
-            }
+          color: { value: "#3A3A3A" },
+          shape: {
+            type: "circle",
+            stroke: { width: 0, color: "#000000" },
+            polygon: { nb_sides: 5 },
+            image: { src: "img/github.svg", width: 100, height: 100 },
           },
-          retina_detect: true
-        });
-
-        // Mobile particles with same config
-        window.particlesJS("particles-js-mobile", {
-          particles: {
-            number: {
-              value: 80,
-              density: {
-                enable: true,
-                value_area: 800,
-              },
-            },
-            color: {
-              value: "#3A3A3A",
-            },
-            shape: {
-              type: "circle",
-              stroke: {
-                width: 0,
-                color: "#000000",
-              },
-              polygon: {
-                nb_sides: 5,
-              },
-              image: {
-                src: "img/github.svg",
-                width: 100,
-                height: 100,
-              },
-            },
-            opacity: {
-              value: 0.5,
-              random: false,
-              anim: {
-                enable: false,
-                speed: 1,
-                opacity_min: 0.1,
-                sync: false,
-              },
-            },
-            size: {
-              value: 3,
-              random: true,
-              anim: {
-                enable: false,
-                speed: 40,
-                size_min: 0.1,
-                sync: false,
-              },
-            },
-            line_linked: {
-              enable: true,
-              distance: 150,
-              color: "#3A3A3A",
-              opacity: 0.4,
-              width: 1,
-            },
-            move: {
-              enable: true,
-              speed: 6,
-              direction: "none",
-              random: false,
-              straight: false,
-              out_mode: "out",
-              bounce: false,
-              attract: {
-                enable: false,
-                rotateX: 600,
-                rotateY: 1200,
-              },
-            },
+          opacity: {
+            value: 0.5,
+            random: false,
+            anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false },
           },
-          interactivity: {
-            detect_on: "canvas",
-            events: {
-              onhover: {
-                enable: true,
-                mode: "repulse",
-              },
-              onclick: {
-                enable: true,
-                mode: "push",
-              },
-              resize: true,
-            },
-            modes: {
-              grab: {
-                distance: 400,
-                line_linked: {
-                  opacity: 1,
-                },
-              },
-              bubble: {
-                distance: 400,
-                size: 40,
-                duration: 2,
-                opacity: 8,
-                speed: 3,
-              },
-              repulse: {
-                distance: 200,
-                duration: 0.4,
-              },
-              push: {
-                particles_nb: 4,
-              },
-              remove: {
-                particles_nb: 2,
-              },
-            },
+          size: {
+            value: 3,
+            random: true,
+            anim: { enable: false, speed: 40, size_min: 0.1, sync: false },
           },
-          retina_detect: true,
-        });
-      }
-    });
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#3A3A3A",
+            opacity: 0.4,
+            width: 1,
+          },
+          move: {
+            enable: true,
+            speed: 6,
+            direction: "none",
+            random: false,
+            straight: false,
+            out_mode: "out",
+            bounce: false,
+            attract: { enable: false, rotateX: 600, rotateY: 1200 },
+          },
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: true, mode: "repulse" },
+            onclick: { enable: true, mode: "push" },
+            resize: true,
+          },
+          modes: {
+            grab: { distance: 400, line_linked: { opacity: 1 } },
+            bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
+            repulse: { distance: 200, duration: 0.4 },
+            push: { particles_nb: 4 },
+            remove: { particles_nb: 2 },
+          },
+        },
+        retina_detect: true,
+      });
+    }
   }, []);
 
   function truncateText(htmlString, length) {
@@ -273,103 +147,80 @@ export default function Home() {
 
   return (
     <>
+      <Script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" strategy="beforeInteractive" />
       <Navbar />
 
-      {/* Hero Content */}
-      <div className="relative">
-        {/* Desktop Hero Section */}
-        <div className="hidden md:block container mx-auto pt-8 px-4 mt-[36px]">
-          <div className="grid grid-cols-2 gap-8 p-8 place-items-center">
-            <div className="flex flex-col gap-y-6">
-              <h1 className="font-semibold text-[40px] lg:text-[60px] leading-tight">
-                Pemungutan Suara Modern dengan Keamanan Tinggi dan Fleksibilitas
-              </h1>
-              <p className="font-normal leading-7 text-[20px] mt-12">
-                AmanMemilih hadir sebagai solusi dari pengembangan sistem rekapitulasi suara menggunakan teknologi Web 3.0,
-                dengan ini hasil rekapitulasi suara tidak bisa dimanipulasi oleh pihak ketiga.
-              </p>
-              <button
-                className="font-semibold text-[20px] bg-[linear-gradient(5deg,_#ffd596_0%,_#ff7272_43%)] text-white px-8 py-4 rounded-lg mt-12 z-10 relative w-fit"
-              >
-                Unduh Sekarang
-              </button>
-            </div>
-            <div className="items-center">
-              <img
-                src="assets/images/Illustration.png"
-                alt="Illustration"
-                className="w-full h-auto"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Hero Section with background image */}
-        <div className="block md:hidden">
-          <div
-            className="h-screen w-full bg-cover bg-center relative overflow-hidden"
-            style={{ backgroundImage: 'url(/assets/images/HeroSectionMobile.png)' }}
-          >
-            {/* Using BackgroundHero.png as overlay */}
-            <div
-              className="absolute inset-0 z-0 bg-cover bg-center"
-              style={{ backgroundImage: 'url(/assets/images/BackgroundHero.png)' }}
-            ></div>
-
-            {/* Content container with fixed positioning relative to viewport height */}
-            <div className="absolute inset-x-0 z-10 px-4">
-              {/* Fixed content layout that maintains position across devices */}
-              <div className="flex flex-col h-screen">
-                {/* Top spacing that ensures content stays in the right spot */}
-                <div className="h-[30vh]"></div>
-
-                {/* Fixed content area */}
-                <div className="flex-1 flex flex-col justify-center">
-                  <h1 className="font-semibold text-[24px] leading-tight text-white">
-                    Pemungutan Suara Modern dengan Keamanan Tinggi dan Fleksibilitas
-                  </h1>
-                  <p className="font-thin leading-7 text-[15px] sm:text-[16px] mt-4 text-white">
-                    AmanMemilih hadir sebagai solusi dari pengembangan sistem rekapitulasi suara menggunakan teknologi Web 3.0,
-                    dengan ini hasil rekapitulasi suara tidak bisa dimanipulasi oleh pihak ketiga.
-                  </p>
-
-                  {/* Button positioned consistently at the bottom with fixed spacing */}
-                  <div className="mt-6 sm:mt-8">
-                    <button
-                      className="font-semibold text-[16px] bg-[linear-gradient(5deg,_#ffd596_0%,_#ff7272_43%)] text-white py-3 rounded-lg w-full"
-                    >
-                      Unduh Sekarang
-                    </button>
-                  </div>
-                </div>
-
-                {/* Bottom spacing */}
-                <div className="h-[15vh]"></div>
+      {/* Hero Content with Particle.js Background */}
+      <div className="relative overflow-hidden">
+        {/* Particle.js hanya di Hero Section */}
+        <div id="particles-js" className="absolute inset-0 z-0 w-full h-full opacity-60 pointer-events-none select-none" />
+        {/* Hero Section Content */}
+        <div className="relative z-10">
+          {/* Desktop Hero Section */}
+          <div className="hidden md:block container mx-auto pt-8 px-4 mt-[36px]">
+            <div className="grid grid-cols-2 gap-8 p-8 place-items-center">
+              <div className="flex flex-col gap-y-6">
+                <h1 className="font-semibold text-[40px] lg:text-[60px] leading-tight">
+                  Pemungutan Suara Modern dengan Keamanan Tinggi dan Fleksibilitas
+                </h1>
+                <p className="font-normal leading-7 text-[20px] mt-12">
+                  AmanMemilih hadir sebagai solusi dari pengembangan sistem rekapitulasi suara menggunakan teknologi Web 3.0,
+                  dengan ini hasil rekapitulasi suara tidak bisa dimanipulasi oleh pihak ketiga.
+                </p>
+                <button
+                  className="font-semibold text-[20px] bg-[linear-gradient(5deg,_#ffd596_0%,_#ff7272_43%)] text-white px-8 py-4 rounded-lg mt-12 z-10 relative w-fit"
+                >
+                  Unduh Sekarang
+                </button>
+              </div>
+              <div className="items-center">
+                <img
+                  src="assets/images/Illustration.png"
+                  alt="Illustration"
+                  className="w-full h-auto"
+                />
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Particle.js Background - Desktop only */}
-        <div 
-          id="particles-js" 
-          className="hidden md:block absolute top-0 right-0 z-[-1] w-1/3 h-full overflow-hidden"
-          style={{
-            position: 'absolute',
-            right: 0,
-            top: 0,
-            bottom: 0
-          }}
-        >
-          {/* Overlay untuk efek blur di depan particles */}
-          <div 
-            className="absolute inset-0 z-10" 
-            style={{ 
-              backdropFilter: 'blur(4px)',
-              background: 'rgba(255, 255, 255, 0.15)', 
-              boxShadow: 'inset -100px 0 70px 20px rgba(255, 255, 255, 0.9)'
-            }}
-          ></div>
+          {/* Mobile Hero Section with background image */}
+          <div className="block md:hidden">
+            <div
+              className="h-screen w-full bg-cover bg-center relative overflow-hidden"
+              style={{ backgroundImage: 'url(/assets/images/HeroSectionMobile.png)' }}
+            >
+              {/* Particle.js juga di mobile Hero Section */}
+              <div id="particles-js-mobile" className="absolute inset-0 z-0 w-full h-full opacity-60 pointer-events-none select-none" />
+              {/* Overlay */}
+              <div
+                className="absolute inset-0 z-0 bg-cover bg-center"
+                style={{ backgroundImage: 'url(/assets/images/BackgroundHero.png)' }}
+              ></div>
+              {/* Content container */}
+              <div className="absolute inset-x-0 z-10 px-4">
+                <div className="flex flex-col h-screen">
+                  <div className="h-[30vh]"></div>
+                  <div className="flex-1 flex flex-col justify-center">
+                    <h1 className="font-semibold text-[24px] leading-tight text-white">
+                      Pemungutan Suara Modern dengan Keamanan Tinggi dan Fleksibilitas
+                    </h1>
+                    <p className="font-thin leading-7 text-[15px] sm:text-[16px] mt-4 text-white">
+                      AmanMemilih hadir sebagai solusi dari pengembangan sistem rekapitulasi suara menggunakan teknologi Web 3.0,
+                      dengan ini hasil rekapitulasi suara tidak bisa dimanipulasi oleh pihak ketiga.
+                    </p>
+                    <div className="mt-6 sm:mt-8">
+                      <button
+                        className="font-semibold text-[16px] bg-[linear-gradient(5deg,_#ffd596_0%,_#ff7272_43%)] text-white py-3 rounded-lg w-full"
+                      >
+                        Unduh Sekarang
+                      </button>
+                    </div>
+                  </div>
+                  <div className="h-[15vh]"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -824,4 +675,6 @@ export default function Home() {
       <Footer />
     </>
   );
-}
+};
+
+export default Home;

@@ -5,6 +5,7 @@ import Navbar from "@/core/components/Navbar";
 import api from "@/core/utils/api";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import Script from "next/script";
 
 const Page = () => {
   const router = useRouter();
@@ -23,6 +24,70 @@ const Page = () => {
   useEffect(() => {
     fetchCandidatSummary();
     fetchProvince();
+  }, []);
+
+  // Inisialisasi particles.js setelah komponen mount
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.particlesJS) {
+      window.particlesJS("particles-js", {
+        particles: {
+          number: {
+            value: 80,
+            density: { enable: true, value_area: 800 },
+          },
+          color: { value: "#3A3A3A" },
+          shape: {
+            type: "circle",
+            stroke: { width: 0, color: "#000000" },
+            polygon: { nb_sides: 5 },
+            image: { src: "img/github.svg", width: 100, height: 100 },
+          },
+          opacity: {
+            value: 0.5,
+            random: false,
+            anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false },
+          },
+          size: {
+            value: 3,
+            random: true,
+            anim: { enable: false, speed: 40, size_min: 0.1, sync: false },
+          },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#3A3A3A",
+            opacity: 0.4,
+            width: 1,
+          },
+          move: {
+            enable: true,
+            speed: 6,
+            direction: "none",
+            random: false,
+            straight: false,
+            out_mode: "out",
+            bounce: false,
+            attract: { enable: false, rotateX: 600, rotateY: 1200 },
+          },
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: true, mode: "repulse" },
+            onclick: { enable: true, mode: "push" },
+            resize: true,
+          },
+          modes: {
+            grab: { distance: 400, line_linked: { opacity: 1 } },
+            bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
+            repulse: { distance: 200, duration: 0.4 },
+            push: { particles_nb: 4 },
+            remove: { particles_nb: 2 },
+          },
+        },
+        retina_detect: true,
+      });
+    }
   }, []);
 
   async function fetchCandidatSummary() {
@@ -99,52 +164,55 @@ const Page = () => {
 
   return (
     <>
+      <Script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" strategy="beforeInteractive" />
       <Navbar />
-      {/* Particle.js Background (pakai SVG statis) */}
-      <div className="absolute inset-0 z-0 overflow-hidden mt-0 opacity-60 pointer-events-none select-none">
-        <img src="/assets/images/particle.svg" alt="Particles" className="w-full h-full object-cover" />
+      {/* Hero Section with Particle.js Background */}
+      <div className="relative overflow-hidden">
+        {/* Particle.js hanya di Hero Section */}
+        <div id="particles-js" className="absolute inset-0 z-0 w-full h-full opacity-60 pointer-events-none select-none" />
+        {/* Hero Section Content */}
+        <main className="relative max-w-screen-md mx-auto px-2 md:px-4 py-8 md:py-16 text-center mt-[80px] z-10">
+          <h1 className="text-[28px] md:text-[44px] leading-tight md:leading-[56px] font-semibold text-black mb-2 md:mb-4" style={{ fontFamily: 'Plus Jakarta Sans' }}>
+            Pantau real count Presiden<br className="hidden md:block" />
+            dan Wakil Presiden
+          </h1>
+          <p className="text-base md:text-xl text-gray-700 mb-6 md:mb-10" style={{ fontFamily: 'Plus Jakarta Sans' }}>
+            Terakhir diperbarui pada jam 14:06 WIB
+          </p>
+          {/* Paslon Percentage Section */}
+          <div className="flex flex-col gap-2 md:gap-4 w-full">
+            {isLoading
+              ? ""
+              : candidatSummary.map((row) => (
+                <div
+                  key={row.no}
+                  className="flex flex-row items-center justify-between bg-white bg-opacity-90 rounded-2xl shadow border border-gray-100 px-3 py-2 md:px-4 md:py-6 w-full min-h-[64px] md:min-h-[unset]"
+                >
+                  {/* Nomor Kandidat */}
+                  <div className="flex-shrink-0 w-8 h-8 md:w-12 md:h-12 bg-[#FF7272] text-white rounded-full flex items-center justify-center font-semibold text-base md:text-2xl mr-2 md:mr-4" style={{ fontFamily: 'Plus Jakarta Sans' }}>
+                    {row.no}
+                  </div>
+                  {/* Foto Kandidat */}
+                  <div className="flex-shrink-0 w-10 h-10 md:w-20 md:h-20 rounded-lg overflow-hidden bg-white mr-2 md:mr-4">
+                    <img
+                      src={row.image}
+                      alt={`Kandidat ${row.no}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  {/* Nama & Persentase */}
+                  <div className="flex-1 flex flex-row items-center justify-between">
+                    <span className="text-sm md:text-xl font-medium text-gray-900" style={{ fontFamily: 'Plus Jakarta Sans' }}>{row.name}</span>
+                    <span className="text-base md:text-2xl font-bold text-gray-900 ml-2 md:ml-0" style={{ fontFamily: 'Plus Jakarta Sans' }}>
+                      {parseFloat(row.vote_percentage).toFixed(1).replace('.', ',')}%
+                    </span>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </main>
       </div>
-      {/* Hero Section */}
-      <main className="relative max-w-screen-md mx-auto px-2 md:px-4 py-8 md:py-16 text-center mt-[80px] z-10">
-        <h1 className="text-[28px] md:text-[44px] leading-tight md:leading-[56px] font-semibold text-black mb-2 md:mb-4" style={{ fontFamily: 'Plus Jakarta Sans' }}>
-          Pantau real count Presiden<br className="hidden md:block" />
-          dan Wakil Presiden
-        </h1>
-        <p className="text-base md:text-xl text-gray-700 mb-6 md:mb-10" style={{ fontFamily: 'Plus Jakarta Sans' }}>
-          Terakhir diperbarui pada jam 14:06 WIB
-        </p>
-        {/* Paslon Percentage Section */}
-        <div className="flex flex-col gap-2 md:gap-4 w-full">
-          {isLoading
-            ? ""
-            : candidatSummary.map((row) => (
-              <div
-                key={row.no}
-                className="flex flex-row items-center justify-between bg-white bg-opacity-90 rounded-2xl shadow border border-gray-100 px-3 py-2 md:px-4 md:py-6 w-full min-h-[64px] md:min-h-[unset]"
-              >
-                {/* Nomor Kandidat */}
-                <div className="flex-shrink-0 w-8 h-8 md:w-12 md:h-12 bg-[#FF7272] text-white rounded-full flex items-center justify-center font-semibold text-base md:text-2xl mr-2 md:mr-4" style={{ fontFamily: 'Plus Jakarta Sans' }}>
-                  {row.no}
-                </div>
-                {/* Foto Kandidat */}
-                <div className="flex-shrink-0 w-10 h-10 md:w-20 md:h-20 rounded-lg overflow-hidden bg-white mr-2 md:mr-4">
-                  <img
-                    src={row.image}
-                    alt={`Kandidat ${row.no}`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                {/* Nama & Persentase */}
-                <div className="flex-1 flex flex-row items-center justify-between">
-                  <span className="text-sm md:text-xl font-medium text-gray-900" style={{ fontFamily: 'Plus Jakarta Sans' }}>{row.name}</span>
-                  <span className="text-base md:text-2xl font-bold text-gray-900 ml-2 md:ml-0" style={{ fontFamily: 'Plus Jakarta Sans' }}>
-                    {parseFloat(row.vote_percentage).toFixed(1).replace('.', ',')}%
-                  </span>
-                </div>
-              </div>
-            ))}
-        </div>
-      </main>
+      {/* Section lain tanpa efek particles.js */}
       {/* Form Section */}
       <div className="w-full max-w-full mx-auto px-2 md:px-4 py-8 md:py-16 text-center">
         <h1
