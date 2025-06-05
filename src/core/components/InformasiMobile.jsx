@@ -2,22 +2,22 @@ import React from 'react';
 
 const infos = [
     {
-        icon: 'https://amanmemilih-backend.motionlaboratory.com/storage/Group1.png',
+        icon: 'assets/images/Group1.png',
         title: 'Biometric Verification',
         desc: 'AmanMemilih menggunakan verifikasi biometrik berupa sidik jari atau deteksi wajah yang terkoneksi dengan handphone pengguna dengan privasi data yang dipastikan terjaga, untuk memastikan pemilihan tidak diwakilkan.'
     },
     {
-        icon: 'https://amanmemilih-backend.motionlaboratory.com/storage/Group3.png',
+        icon: 'assets/images/Group3.png',
         title: 'IPFS as Decentralize Storage',
         desc: 'IPFS (Interplanetary File Sistem) memungkinkan tidak ada data yang bisa dimanipulasi dan dipastikan semua data tidak mengalami kerusakan. Bahkan AmanMemilih tidak dapat memodifikasi data yang ada.'
     },
     {
-        icon: 'https://amanmemilih-backend.motionlaboratory.com/storage/Group2.png',
+        icon: 'assets/images/Group2.png',
         title: 'Secure Hash Algorithm',
         desc: 'Sebelum data dikirim ke blockchain, data akan terlebih dahulu di hashing dengan SHA-256, walaupun data dapat diakses secara publik, tetap tidak ada yang tahu isi data tersebut kecuali disamakan dengan data aslinya.'
     },
     {
-        icon: 'https://amanmemilih-backend.motionlaboratory.com/storage/Group4.png',
+        icon: 'assets/images/Group4.png',
         title: 'Blockchain as Decentralize DB',
         desc: 'Blockchain adalah solusi untuk melindungi data tersebut, dengan transaksi yang satu arah, memiliki nilai ID yang unik, dan ledger yang dapat diakses siapa saja. Data voting akan tetap orisinal, rahasia dan transparan.'
     },

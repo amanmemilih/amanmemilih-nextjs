@@ -1,7 +1,10 @@
 "use client";
 
-import Footer from "@/core/components/Footer";
+import FooterDesktop from "@/core/components/FooterDesktop";
+import FooterMobile from "@/core/components/FooterMobile";
 import Navbar from "@/core/components/Navbar";
+import HeroDesktop from "@/core/components/HeroDesktop";
+import HeroMobile from "@/core/components/HeroMobile";
 import api from "@/core/utils/api";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -67,64 +70,53 @@ const Home = () => {
   // Inisialisasi particles.js setelah komponen mount
   useEffect(() => {
     if (typeof window !== "undefined" && window.particlesJS) {
-      window.particlesJS("particles-js", {
-        particles: {
-          number: {
-            value: 80,
-            density: { enable: true, value_area: 800 },
-          },
-          color: { value: "#3A3A3A" },
-          shape: {
-            type: "circle",
-            stroke: { width: 0, color: "#000000" },
-            polygon: { nb_sides: 5 },
-            image: { src: "img/github.svg", width: 100, height: 100 },
-          },
-          opacity: {
-            value: 0.5,
-            random: false,
-            anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false },
-          },
-          size: {
-            value: 3,
-            random: true,
-            anim: { enable: false, speed: 40, size_min: 0.1, sync: false },
-          },
-          line_linked: {
-            enable: true,
-            distance: 150,
-            color: "#3A3A3A",
-            opacity: 0.4,
-            width: 1,
-          },
-          move: {
-            enable: true,
-            speed: 6,
-            direction: "none",
-            random: false,
-            straight: false,
-            out_mode: "out",
-            bounce: false,
-            attract: { enable: false, rotateX: 600, rotateY: 1200 },
-          },
-        },
-        interactivity: {
-          detect_on: "canvas",
-          events: {
-            onhover: { enable: true, mode: "repulse" },
-            onclick: { enable: true, mode: "push" },
-            resize: true,
-          },
-          modes: {
-            grab: { distance: 400, line_linked: { opacity: 1 } },
-            bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
-            repulse: { distance: 200, duration: 0.4 },
-            push: { particles_nb: 4 },
-            remove: { particles_nb: 2 },
-          },
-        },
-        retina_detect: true,
-      });
+      // Cek apakah mode mobile atau desktop
+      const isMobile = window.matchMedia("(max-width: 767px)").matches;
+      if (isMobile) {
+        // Mobile: inisialisasi hanya jika container mobile ada
+        const mobileContainer = document.getElementById("particles-js-mobile");
+        if (mobileContainer) {
+          window.particlesJS("particles-js-mobile", {
+            particles: {
+              number: { value: 60, density: { enable: true, value_area: 600 } },
+              color: { value: "#3A3A3A" },
+              shape: { type: "circle", stroke: { width: 0, color: "#000000" }, polygon: { nb_sides: 5 } },
+              opacity: { value: 0.4, random: false },
+              size: { value: 2, random: true },
+              line_linked: { enable: true, distance: 120, color: "#3A3A3A", opacity: 0.3, width: 1 },
+              move: { enable: true, speed: 3, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
+            },
+            interactivity: {
+              detect_on: "canvas",
+              events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true },
+              modes: { grab: { distance: 200, line_linked: { opacity: 1 } }, bubble: { distance: 200, size: 20, duration: 2, opacity: 8, speed: 3 }, repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 2 }, remove: { particles_nb: 1 } }
+            },
+            retina_detect: true
+          });
+        }
+      } else {
+        // Desktop: inisialisasi hanya jika container desktop ada
+        const desktopContainer = document.getElementById("particles-js");
+        if (desktopContainer) {
+          window.particlesJS("particles-js", {
+            particles: {
+              number: { value: 80, density: { enable: true, value_area: 800 } },
+              color: { value: "#3A3A3A" },
+              shape: { type: "circle", stroke: { width: 0, color: "#000000" }, polygon: { nb_sides: 5 } },
+              opacity: { value: 0.5, random: false },
+              size: { value: 3, random: true },
+              line_linked: { enable: true, distance: 150, color: "#3A3A3A", opacity: 0.4, width: 1 },
+              move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
+            },
+            interactivity: {
+              detect_on: "canvas",
+              events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true },
+              modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 }, repulse: { distance: 200, duration: 0.4 }, push: { particles_nb: 4 }, remove: { particles_nb: 2 } }
+            },
+            retina_detect: true
+          });
+        }
+      }
     }
   }, []);
 
@@ -149,79 +141,12 @@ const Home = () => {
     <>
       <Script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" strategy="beforeInteractive" />
       <Navbar />
-
-      {/* Hero Content with Particle.js Background */}
-      <div className="relative overflow-hidden">
-        {/* Particle.js hanya di Hero Section */}
-        <div id="particles-js" className="absolute inset-0 z-0 w-full h-full opacity-60 pointer-events-none select-none" />
-        {/* Hero Section Content */}
-        <div className="relative z-10">
-          {/* Desktop Hero Section */}
-          <div className="hidden md:block container mx-auto pt-8 px-4 mt-[36px]">
-            <div className="grid grid-cols-2 gap-8 p-8 place-items-center">
-              <div className="flex flex-col gap-y-6">
-                <h1 className="font-semibold text-[40px] lg:text-[60px] leading-tight">
-                  Pemungutan Suara Modern dengan Keamanan Tinggi dan Fleksibilitas
-                </h1>
-                <p className="font-normal leading-7 text-[20px] mt-12">
-                  AmanMemilih hadir sebagai solusi dari pengembangan sistem rekapitulasi suara menggunakan teknologi Web 3.0,
-                  dengan ini hasil rekapitulasi suara tidak bisa dimanipulasi oleh pihak ketiga.
-                </p>
-                <button
-                  className="font-semibold text-[20px] bg-[linear-gradient(5deg,_#ffd596_0%,_#ff7272_43%)] text-white px-8 py-4 rounded-lg mt-12 z-10 relative w-fit"
-                >
-                  Unduh Sekarang
-                </button>
-              </div>
-              <div className="items-center">
-                <img
-                  src="assets/images/Illustration.png"
-                  alt="Illustration"
-                  className="w-full h-auto"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile Hero Section with background image */}
-          <div className="block md:hidden">
-            <div
-              className="h-screen w-full bg-cover bg-center relative overflow-hidden"
-              style={{ backgroundImage: 'url(/assets/images/HeroSectionMobile.png)' }}
-            >
-              {/* Particle.js juga di mobile Hero Section */}
-              <div id="particles-js-mobile" className="absolute inset-0 z-0 w-full h-full opacity-60 pointer-events-none select-none" />
-              {/* Overlay */}
-              <div
-                className="absolute inset-0 z-0 bg-cover bg-center"
-                style={{ backgroundImage: 'url(/assets/images/BackgroundHero.png)' }}
-              ></div>
-              {/* Content container */}
-              <div className="absolute inset-x-0 z-10 px-4">
-                <div className="flex flex-col h-screen">
-                  <div className="h-[30vh]"></div>
-                  <div className="flex-1 flex flex-col justify-center">
-                    <h1 className="font-semibold text-[24px] leading-tight text-white">
-                      Pemungutan Suara Modern dengan Keamanan Tinggi dan Fleksibilitas
-                    </h1>
-                    <p className="font-thin leading-7 text-[15px] sm:text-[16px] mt-4 text-white">
-                      AmanMemilih hadir sebagai solusi dari pengembangan sistem rekapitulasi suara menggunakan teknologi Web 3.0,
-                      dengan ini hasil rekapitulasi suara tidak bisa dimanipulasi oleh pihak ketiga.
-                    </p>
-                    <div className="mt-6 sm:mt-8">
-                      <button
-                        className="font-semibold text-[16px] bg-[linear-gradient(5deg,_#ffd596_0%,_#ff7272_43%)] text-white py-3 rounded-lg w-full"
-                      >
-                        Unduh Sekarang
-                      </button>
-                    </div>
-                  </div>
-                  <div className="h-[15vh]"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Hero Section Responsive */}
+      <div className="hidden md:block">
+        <HeroDesktop />
+      </div>
+      <div className="block md:hidden">
+        <HeroMobile />
       </div>
 
       {/* SECTION CARD INFO with Particles.js as background on mobile */}
@@ -343,33 +268,31 @@ const Home = () => {
       </div>
 
       {/* Konten */}
-      <div className="flex flex-col md:flex-row justify-center px-4 md:space-x-16">
-        <div className="flex flex-col items-center w-full md:w-96 h-auto p-6 md:p-8 md:pt-20 mt-6 md:mt-24 bg-white rounded-lg shadow-2xl shadow-[#FF7272]/10 md:scale-150 md:mr-48 mb-8 md:mb-0">
+      <div className="flex flex-col md:flex-row justify-center px-4 md:space-x-8">
+        <div className="flex flex-col items-center w-full md:w-1/3 h-auto p-4 md:p-6 mt-4 md:mt-8 bg-white rounded-lg shadow-lg shadow-[#FF7272]/10 mb-6 md:mb-0">
           <img
             src="assets/images/undraw_shared_workspace_re_3gsu 1.png"
             alt="Pantau hasil real count"
-            className="w-full h-32 md:h-40 object-contain"
+            className="w-24 h-24 md:w-32 md:h-32 object-contain"
           />
-          <h2 className="text-xl md:text-2xl font-bold mt-6 md:mt-8 text-center md:text-left w-full">
+          <h2 className="text-lg md:text-xl font-bold mt-4 md:mt-6 text-center w-full">
             Pantau hasil real count
           </h2>
-          <p className="text-base text-gray-600 mt-3 md:mt-4 text-center md:text-left">
-            Ketahui hasil rekapitulasi suara dari pasangan calon pilihan kamu
-            secara real-time
+          <p className="text-sm md:text-base text-gray-600 mt-2 md:mt-3 text-center">
+            Ketahui hasil rekapitulasi suara dari pasangan calon pilihan kamu secara real-time
           </p>
         </div>
-        <div className="flex flex-col items-center w-full md:w-96 h-auto p-6 md:p-8 bg-white mt-6 md:mt-24 bg-opacity-30 backdrop-blur-md rounded-lg shadow-2xl shadow-[#FF7272]/10 md:scale-150">
+        <div className="flex flex-col items-center w-full md:w-1/3 h-auto p-4 md:p-6 bg-white mt-4 md:mt-8 bg-opacity-30 backdrop-blur-md rounded-lg shadow-lg shadow-[#FF7272]/10">
           <img
             src="assets/images/illustration2.png"
             alt="Laporkan"
-            className="w-32 h-32 md:w-48 md:h-48"
+            className="w-24 h-24 md:w-32 md:h-32 object-contain"
           />
-          <h2 className="text-xl md:text-2xl font-bold mt-6 md:mt-10 text-center md:text-left w-full">
+          <h2 className="text-lg md:text-xl font-bold mt-4 md:mt-6 text-center w-full">
             Laporkan
           </h2>
-          <p className="text-base text-gray-600 mt-3 md:mt-4 text-center md:text-left">
-            Jika terdapat kesalahan pada hasil rekapitulasi suara, segera
-            laporkan ke Bawaslu setempat.
+          <p className="text-sm md:text-base text-gray-600 mt-2 md:mt-3 text-center">
+            Jika terdapat kesalahan pada hasil rekapitulasi suara, segera laporkan ke Bawaslu setempat.
           </p>
         </div>
       </div>
@@ -563,116 +486,13 @@ const Home = () => {
         </div>
       </div>
 
-      {/* ----- SECTION BERITA ----- */}
-      <div id="berita" className="py-8 md:py-16"></div>
-      <div className="flex justify-center px-4">
-        <div className="flex items-center justify-center rounded-md text-center py-6 md:p-12">
-          <h1 className="leading-normal text-black text-3xl md:text-5xl font-semibold">
-            Berita
-          </h1>
-        </div>
+      {/* Footer Responsive: Desktop & Mobile */}
+      <div className="hidden md:block">
+        <FooterDesktop />
       </div>
-
-      {isLoading ? (
-        <div className="flex justify-center py-8">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FF7272]"></div>
-        </div>
-      ) : (
-        <>
-          {/* Mobile view - 2 column grid with updated card layout */}
-          <div className="md:hidden grid grid-cols-2 gap-3 px-4 my-4">
-            {data && data.length > 0 ? data.slice(0, 4).map((row) => (
-              <Link
-                href={"/berita/" + row.id}
-                key={row.id}
-                className="rounded-lg overflow-hidden cursor-pointer shadow-md hover:shadow-lg transition-shadow duration-300 bg-white flex flex-col"
-              >
-                {/* Image container with fixed height */}
-                <div className="relative w-full h-24">
-                  <img
-                    className="w-full h-full object-cover"
-                    src={row.thumbnail}
-                    alt={row.title}
-                    loading="lazy"
-                  />
-                </div>
-
-                {/* Content container */}
-                <div className="p-2 flex flex-col flex-grow">
-                  {/* Title with controlled font size */}
-                  <h3
-                    className="font-medium text-xs leading-tight mb-1 line-clamp-2 h-8"
-                    style={{ fontFamily: '"Alata"' }}
-                  >
-                    {truncateText(row.title, 40)}
-                  </h3>
-
-                  {/* Short excerpt from article - only shown if space allows */}
-                  <p className="text-gray-500 text-[10px] line-clamp-1 mb-1">
-                    {truncateText(row.body, 30)}
-                  </p>
-
-                  {/* Author and date row at bottom */}
-                  <div className="flex justify-between items-center text-[9px] text-gray-500 mt-auto pt-1 border-t border-gray-100">
-                    <span className="flex items-center">
-                      <span>~Admin</span>
-                    </span>
-                    <time className="opacity-70">
-                      {formatToHumanReadable(row.created_at).split(' ').slice(0, 2).join(' ')}
-                    </time>
-                  </div>
-                </div>
-              </Link>
-            )) : (
-              <div className="col-span-2 text-center py-6 text-gray-500">
-                Belum ada berita tersedia.
-              </div>
-            )}
-          </div>
-
-          {/* Desktop view - original layout */}
-          <div className="hidden md:flex md:flex-row justify-center gap-6 md:space-x-8 my-6 px-4">
-            {data && data.length > 0 ? data.slice(0, 3).map((row) => (
-              <Link
-                href={"/berita/" + row.id}
-                key={row.id}
-                className="max-w-sm rounded overflow-hidden cursor-pointer shadow-lg hover:shadow-xl transition-shadow duration-300"
-              >
-                <img
-                  className="w-full h-52 object-cover"
-                  src={row.thumbnail}
-                  alt={row.title}
-                />
-                <div className="px-4 py-4">
-                  <div
-                    className="font-normal text-lg md:text-[20px] mb-2"
-                    style={{ fontFamily: '"Alata"' }}
-                  >
-                    {truncateText(row.title, 30)}
-                  </div>
-                  <p className="text-gray-400 text-sm md:text-base opacity-90">
-                    {truncateText(row.body, 100)}
-                  </p>
-                </div>
-                <div className="flex justify-between items-center text-sm text-gray-500 px-4 py-4">
-                  <span className="flex items-center">
-                    <span className="mr-2">~Admin</span>
-                  </span>
-                  <time className="opacity-50">
-                    {formatToHumanReadable(row.created_at)}
-                  </time>
-                </div>
-              </Link>
-            )) : (
-              <div className="text-center py-6 text-gray-500">
-                Belum ada berita tersedia.
-              </div>
-            )}
-          </div>
-        </>
-      )}
-
-      <Footer />
+      <div className="block md:hidden">
+        <FooterMobile />
+      </div>
     </>
   );
 };

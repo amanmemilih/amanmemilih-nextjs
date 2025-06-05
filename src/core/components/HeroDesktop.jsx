@@ -2,7 +2,9 @@ import React from 'react';
 
 export default function HeroDesktop() {
     return (
-        <div className="md:container md:mx-auto pt-8 mt-[36px] font-['Plus_Jakarta_Sans']">
+        <div className="relative md:container md:mx-auto pt-8 mt-[36px] font-['Plus_Jakarta_Sans']">
+            {/* Particles.js background for desktop */}
+            <div id="particles-js" className="hidden md:block absolute inset-0 w-full h-full z-[-1] opacity-60 pointer-events-none" />
             <div className="grid grid-cols-2 p-8 place-items-center">
                 <div className="gap-y-35">
                     <p className="font-semibold text-[60px] md:text-[40]" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
@@ -21,4 +23,4 @@ export default function HeroDesktop() {
             </div>
         </div>
     );
-} 
+}
