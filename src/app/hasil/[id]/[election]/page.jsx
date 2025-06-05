@@ -130,9 +130,9 @@ export default function Home({ params }) {
                   Wilayah Pemilihan:{" "}
                 </span>
                 <span className="text-gray-600 font-normal">
-                  {data.tps.province} / {data.tps.district} /{" "}
-                  {data.tps.subdistrict} / {data.tps.village} /{" "}
-                  {data.tps.username}
+                  {data?.tps?.province} / {data?.tps?.district} /{" "}
+                  {data?.tps?.subdistrict} / {data?.tps?.village} /{" "}
+                  {data?.tps?.username}
                 </span>
               </div>
             </div>

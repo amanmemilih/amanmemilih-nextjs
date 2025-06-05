@@ -45,7 +45,7 @@ const Page = () => {
     setIsSearchLoading(true);
     const response = await api.get("/bps/district/" + e.target.value);
     setIsSearchLoading(false);
-
+    console.log("OK", response);
     setDistrict(response.data.data);
     setSubdistrict(null);
     setVillage(null);
@@ -100,78 +100,66 @@ const Page = () => {
   return (
     <>
       <Navbar />
-      {/* Particle.js Background */}
-      <div
-        id="particles-js"
-        className="absolute inset-0 z-0 overflow-hidden mt-24 opacity-50"
-      ></div>
+      {/* Particle.js Background (pakai SVG statis) */}
+      <div className="absolute inset-0 z-0 overflow-hidden mt-0 opacity-60 pointer-events-none select-none">
+        <img src="/assets/images/particle.svg" alt="Particles" className="w-full h-full object-cover" />
+      </div>
       {/* Hero Section */}
-      <main className="relative max-w-screen-lg mx-auto px-4 py-16 text-center mt-[80px]">
-        <div className="flex flex-col items-center justify-start text-center mb-24">
-          <div className="flex flex-col max-w-[800px] p-4">
-            <h1 className="text-[52px] leading-[72px] font-semibold text-black mb-4">
-              Pantau hasil real count Presiden dan Wakil Presiden
-            </h1>
-          </div>
-        </div>
+      <main className="relative max-w-screen-md mx-auto px-2 md:px-4 py-8 md:py-16 text-center mt-[80px] z-10">
+        <h1 className="text-[28px] md:text-[44px] leading-tight md:leading-[56px] font-semibold text-black mb-2 md:mb-4" style={{ fontFamily: 'Plus Jakarta Sans' }}>
+          Pantau real count Presiden<br className="hidden md:block" />
+          dan Wakil Presiden
+        </h1>
+        <p className="text-base md:text-xl text-gray-700 mb-6 md:mb-10" style={{ fontFamily: 'Plus Jakarta Sans' }}>
+          Terakhir diperbarui pada jam 14:06 WIB
+        </p>
         {/* Paslon Percentage Section */}
-        <div className="flex justify-center gap-6 mt-10 px-4 relative z-10">
+        <div className="flex flex-col gap-2 md:gap-4 w-full">
           {isLoading
             ? ""
             : candidatSummary.map((row) => (
-                <div
-                  key={row.no}
-                  className="relative z-10 backdrop-blur-md bg-[#3A3A3A]/5 rounded-lg overflow-hidden w-[380px] h-[350px] text-center"
-                >
-                  {/* Nomor Kandidat */}
-                  <div
-                    className="absolute top-[150px] left-1/2 transform -translate-x-1/2 w-16 h-16 bg-[#FF7272] text-white rounded-full flex items-center justify-center font-semibold text-[28px] z-10"
-                    style={{ fontFamily: '"Plus Jakarta Sans"' }}
-                  >
-                    {row.no}
-                  </div>
-                  {/* Foto Kandidat */}
-                  <div className="h-[174px] flex justify-center items-center  ">
-                    <img
-                      src={row.image}
-                      alt="Kandidat 1"
-                      className="h-auto w-auto max-w-full max-h-full mt-4"
-                    />
-                  </div>
-                  {/* Nama dan Persentase */}
-                  <div className="p-4">
-                    <h3
-                      className="max-w-full mt-8 whitespace-nowrap text-[28px] font-medium text-gray-800"
-                      style={{ fontFamily: '"Plus Jakarta Sans"' }}
-                    >
-                      {row.name}
-                    </h3>
-                    <p
-                      className="text-[42px] font-semibold mt-2 text-gray-900"
-                      style={{ fontFamily: '"Plus Jakarta Sans"' }}
-                    >
-                      {parseFloat(row.vote_percentage).toFixed(1)}%
-                    </p>
-                  </div>
+              <div
+                key={row.no}
+                className="flex flex-row items-center justify-between bg-white bg-opacity-90 rounded-2xl shadow border border-gray-100 px-3 py-2 md:px-4 md:py-6 w-full min-h-[64px] md:min-h-[unset]"
+              >
+                {/* Nomor Kandidat */}
+                <div className="flex-shrink-0 w-8 h-8 md:w-12 md:h-12 bg-[#FF7272] text-white rounded-full flex items-center justify-center font-semibold text-base md:text-2xl mr-2 md:mr-4" style={{ fontFamily: 'Plus Jakarta Sans' }}>
+                  {row.no}
                 </div>
-              ))}
+                {/* Foto Kandidat */}
+                <div className="flex-shrink-0 w-10 h-10 md:w-20 md:h-20 rounded-lg overflow-hidden bg-white mr-2 md:mr-4">
+                  <img
+                    src={row.image}
+                    alt={`Kandidat ${row.no}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {/* Nama & Persentase */}
+                <div className="flex-1 flex flex-row items-center justify-between">
+                  <span className="text-sm md:text-xl font-medium text-gray-900" style={{ fontFamily: 'Plus Jakarta Sans' }}>{row.name}</span>
+                  <span className="text-base md:text-2xl font-bold text-gray-900 ml-2 md:ml-0" style={{ fontFamily: 'Plus Jakarta Sans' }}>
+                    {parseFloat(row.vote_percentage).toFixed(1).replace('.', ',')}%
+                  </span>
+                </div>
+              </div>
+            ))}
         </div>
       </main>
       {/* Form Section */}
-      <div className=" max-w-screen-full mx-auto px-4 py-16 text-center">
+      <div className="w-full max-w-full mx-auto px-2 md:px-4 py-8 md:py-16 text-center">
         <h1
-          className="text-[40px] font-bold mb-8 relative z-10"
+          className="text-[24px] md:text-[40px] font-bold mb-6 md:mb-8 relative z-10"
           style={{ fontFamily: '"Plus Jakarta Sans"' }}
         >
           Cari berdasarkan daerah anda
         </h1>
-        <div className="w-full max-w-6xl mx-auto px-[40px] py-[52px] bg-white rounded-2xl shadow-2xl shadow-[#FF7272]/10 border border-[#FFECEC]">
+        <div className="w-full max-w-md md:max-w-6xl mx-auto px-2 md:px-[40px] py-6 md:py-[52px] bg-white rounded-2xl shadow-2xl shadow-[#FF7272]/10 border border-[#FFECEC]">
           {/* Form Row Pertama */}
-          <div className="flex flex-wrap gap-4 mb-7">
+          <div className="flex flex-col md:flex-row gap-4 mb-4 md:mb-7">
             {/* Pilih Provinsi */}
-            <div className="flex-1 mr-2">
+            <div className="flex-1">
               <select
-                className="w-full p-3 border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
+                className="w-full p-3 text-sm md:text-base border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
                 style={{ fontFamily: '"Plus Jakarta Sans"' }}
                 onChange={handleElectionType}
                 value={electionType}
@@ -184,9 +172,9 @@ const Page = () => {
               </select>
             </div>
             {/* Pilih Provinsi */}
-            <div className="flex-1 mr-2">
+            <div className="flex-1">
               <select
-                className="w-full p-3 border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
+                className="w-full p-3 text-sm md:text-base border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
                 style={{ fontFamily: '"Plus Jakarta Sans"' }}
                 onChange={handleProvince}
               >
@@ -200,11 +188,11 @@ const Page = () => {
             </div>
           </div>
           {/* Form Row Kedua */}
-          <div className="flex flex-wrap gap-4 mb-7">
+          <div className="flex flex-col md:flex-row gap-4 mb-4 md:mb-7">
             {/* Pilih Kota/Kabupaten */}
             <div className="flex-1">
               <select
-                className="w-full p-3 border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
+                className="w-full p-3 text-sm md:text-base border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
                 style={{ fontFamily: '"Plus Jakarta Sans"' }}
                 disabled={district == null}
                 onChange={handleDistrict}
@@ -212,17 +200,17 @@ const Page = () => {
                 <option>Pilih Kota/Kabupaten</option>
                 {district
                   ? district.map((row) => (
-                      <option key={row.id} value={row.id}>
-                        {row.name}
-                      </option>
-                    ))
+                    <option key={row.id} value={row.id}>
+                      {row.name}
+                    </option>
+                  ))
                   : ""}
               </select>
             </div>
             {/* Pilih Kelurahan */}
-            <div className="flex-1 mr-2">
+            <div className="flex-1">
               <select
-                className="w-full p-3 border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
+                className="w-full p-3 text-sm md:text-base border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
                 style={{ fontFamily: '"Plus Jakarta Sans"' }}
                 disabled={subdistrict == null}
                 onChange={handleSubdistrict}
@@ -230,20 +218,20 @@ const Page = () => {
                 <option>Pilih Kelurahan</option>
                 {subdistrict
                   ? subdistrict.map((row) => (
-                      <option key={row.id} value={row.id}>
-                        {row.name}
-                      </option>
-                    ))
+                    <option key={row.id} value={row.id}>
+                      {row.name}
+                    </option>
+                  ))
                   : ""}
               </select>
             </div>
           </div>
           {/* Form Row Ketiga */}
-          <div className="flex flex-wrap gap-4 items-center">
+          <div className="flex flex-col md:flex-row gap-4 items-center">
             {/* Pilih Kecamatan */}
-            <div className="flex-1">
+            <div className="flex-1 w-full">
               <select
-                className="w-full p-3 border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
+                className="w-full p-3 text-sm md:text-base border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
                 style={{ fontFamily: '"Plus Jakarta Sans"' }}
                 onChange={handleVillage}
                 disabled={village == null}
@@ -251,17 +239,17 @@ const Page = () => {
                 <option>Pilih Kecamatan</option>
                 {village
                   ? village.map((row) => (
-                      <option key={row.id} value={row.id}>
-                        {row.name}
-                      </option>
-                    ))
+                    <option key={row.id} value={row.id}>
+                      {row.name}
+                    </option>
+                  ))
                   : ""}
               </select>
             </div>
             {/* Pilih TPS */}
-            <div className="flex-1 mr-2">
+            <div className="flex-1 w-full">
               <select
-                className="w-full p-3 border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
+                className="w-full p-3 text-sm md:text-base border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
                 style={{ fontFamily: '"Plus Jakarta Sans"' }}
                 disabled={tps == null}
                 onChange={(e) => {
@@ -271,22 +259,21 @@ const Page = () => {
                 <option value="">Pilih TPS</option>
                 {tps
                   ? tps.map((row) => (
-                      <option key={row.id} value={row.id}>
-                        {row.name}
-                      </option>
-                    ))
+                    <option key={row.id} value={row.id}>
+                      {row.name}
+                    </option>
+                  ))
                   : ""}
               </select>
             </div>
             {/* Tombol Cari */}
-            <div>
+            <div className="w-full md:w-auto mt-4 md:mt-0">
               <div
                 onClick={handleSearch}
-                className={`px-16 py-3 text-lg rounded-3xl text-white ${
-                  documentID == null || documentID == ""
-                    ? "bg-red-200"
-                    : "bg-[#FF7272] hover:bg-red-500 cursor-pointer"
-                } transition-all duration-300  hover:text-white hover:border hover:border-gray-300`}
+                className={`w-full md:w-auto px-0 md:px-16 py-3 text-base md:text-lg rounded-3xl text-white ${documentID == null || documentID == ""
+                  ? "bg-red-200"
+                  : "bg-[#FF7272] hover:bg-red-500 cursor-pointer"
+                  } transition-all duration-300  hover:text-white hover:border hover:border-gray-300`}
                 style={{ fontFamily: '"Plus Jakarta Sans"' }}
               >
                 Cari
