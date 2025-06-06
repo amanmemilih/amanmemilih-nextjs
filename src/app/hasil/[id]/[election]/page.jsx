@@ -3,6 +3,8 @@ import { useEffect, useState, use } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback } from "react";
+import FooterDesktop from "@/core/components/FooterDesktop";
+import FooterMobile from "@/core/components/FooterMobile";
 import Navbar from "@/core/components/Navbar";
 import Footer from "@/core/components/Footer";
 import api from "@/core/utils/api";
@@ -162,7 +164,13 @@ export default function Home({ params }) {
           </main>
         )}
         {/* Footer moved outside of main */}
-        <Footer />
+        {/* Responsive Footer */}
+      <div className="hidden md:block">
+        <FooterDesktop />
+      </div>
+      <div className="block md:hidden">
+        <FooterMobile />
+      </div>
       </div>
 
       {/* Popup Modal */}
