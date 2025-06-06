@@ -72,7 +72,18 @@ The responsive implementation now ensures that the AmanMemilih landing page look
 
 ## June 5, 2025
 
+### Efek Particles.js pada Hero Section (Landing & Lihat Suara)
+
+- Menambahkan dan menstandarkan efek background particles.js hanya pada Hero Section di halaman landing (`/src/app/page.jsx`) dan halaman "lihat-suara" (`/src/app/lihat-suara/page.jsx`).
+- Efek partikel tidak lagi muncul di section lain, hanya sebagai background Hero Section sesuai permintaan user.
+- Konfigurasi, warna, dan interaktivitas partikel disamakan di kedua halaman.
+- Penempatan partikel di belakang konten Hero Section, sehingga konten tetap jelas dan partikel tidak mengganggu interaksi.
+- Menyesuaikan inisialisasi dan penempatan container `#particles-js` (desktop & mobile) agar hanya aktif di Hero Section.
+- Tidak ada perubahan pada section lain, sehingga performa dan visual tetap optimal.
+
 ### Perbaikan Path Gambar pada InformasiDesktop.jsx
 
 - Mengganti seluruh path gambar dari `public/assets/images/...` menjadi `/assets/images/...` agar sesuai dengan standar Next.js dan memastikan gambar tampil dengan benar.
 - Tidak ada error path gambar pada halaman informasi keamanan setelah perubahan ini.
+
+---

@@ -1,6 +1,7 @@
 "use client";
 
-import Footer from "@/core/components/Footer";
+import FooterDesktop from "@/core/components/FooterDesktop";
+import FooterMobile from "@/core/components/FooterMobile";
 import Navbar from "@/core/components/Navbar";
 import api from "@/core/utils/api";
 import { useRouter } from "next/navigation";
@@ -166,44 +167,75 @@ const Page = () => {
     <>
       <Script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" strategy="beforeInteractive" />
       <Navbar />
-      {/* Hero Section with Particle.js Background */}
-      <div className="relative overflow-hidden">
-        {/* Particle.js hanya di Hero Section */}
-        <div id="particles-js" className="absolute inset-0 z-0 w-full h-full opacity-60 pointer-events-none select-none" />
-        {/* Hero Section Content */}
+      {/* Particle.js Background - Only for Hero Section */}
+      <div className="relative">
+        <div id="particles-js" className="absolute inset-0 z-0 overflow-hidden opacity-60 pointer-events-none select-none w-full h-full" />
+        {/* Hero Section */}
         <main className="relative max-w-screen-md mx-auto px-2 md:px-4 py-8 md:py-16 text-center mt-[80px] z-10">
           <h1 className="text-[28px] md:text-[44px] leading-tight md:leading-[56px] font-semibold text-black mb-2 md:mb-4" style={{ fontFamily: 'Plus Jakarta Sans' }}>
             Pantau real count Presiden<br className="hidden md:block" />
             dan Wakil Presiden
           </h1>
-          <p className="text-base md:text-xl text-gray-700 mb-6 md:mb-10" style={{ fontFamily: 'Plus Jakarta Sans' }}>
+          {/* <p className="text-base md:text-xl text-gray-700 mb-6 md:mb-10" style={{ fontFamily: 'Plus Jakarta Sans' }}>
             Terakhir diperbarui pada jam 14:06 WIB
-          </p>
-          {/* Paslon Percentage Section */}
-          <div className="flex flex-col gap-2 md:gap-4 w-full">
+          </p> */}
+          {/* Paslon Percentage Section - Desktop */}
+          <div className="hidden md:flex flex-row gap-8 w-full justify-center mt-8">
+            {isLoading
+              ? null
+              : candidatSummary.map((row, idx) => (
+                <div
+                  key={row.no}
+                  className="flex flex-col items-center bg-white rounded-[20px] border border-[#F2F2F2] shadow-lg w-[600px] max-w-[640px] min-h-[420px] px-0 pt-0 pb-8 relative transition-all duration-300 hover:scale-105"
+                >
+                  {/* Foto Kandidat dengan background gradasi, gambar benar-benar nempel ke bawah dan nomor urut di atas gambar */}
+                  <div className="w-full h-[220px] rounded-t-[20px] flex items-end justify-center bg-gradient-to-b from-[#FFB084] to-[#FF7272] relative overflow-visible p-0">
+                    {/* Nomor urut bulat di atas gambar, menempel di bawah gradasi dan di atas area putih */}
+                    <div className="absolute left-1/2 -translate-x-1/2 bottom-[-36px] z-50">
+                      <div className="w-16 h-16 rounded-full bg-[#FF7272] flex items-center justify-center text-white text-3xl font-bold border-4 border-white shadow-2xl">
+                        {row.no}
+                      </div>
+                    </div>
+                    <img
+                      src={row.image}
+                      alt={`Kandidat ${row.no}`}
+                      className="w-full h-[220px] object-contain drop-shadow-xl mx-auto mb-[-8px] z-10"
+                      style={{ maxWidth: '100%', objectPosition: 'bottom' }}
+                    />
+                  </div>
+                  {/* Nama Paslon & Persentase */}
+                  <div className="flex flex-col items-center justify-center mt-16 px-4 w-full min-h-[120px]">
+                    <span className="block text-2xl font-semibold text-[#222] mb-2 text-center leading-tight whitespace-nowrap overflow-hidden text-ellipsis" style={{ fontFamily: 'Plus Jakarta Sans' }}>{row.name}</span>
+                    <span className="block text-5xl font-bold text-[#222] mt-2 text-center whitespace-nowrap" style={{ fontFamily: 'Plus Jakarta Sans' }}>{parseFloat(row.vote_percentage).toFixed(1).replace('.', ',')}%</span>
+                  </div>
+                </div>
+              ))}
+          </div>
+          {/* Mobile version tetap pakai flex-col seperti sebelumnya */}
+          <div className="flex flex-col gap-2 md:hidden w-full">
             {isLoading
               ? ""
               : candidatSummary.map((row) => (
                 <div
                   key={row.no}
-                  className="flex flex-row items-center justify-between bg-white bg-opacity-90 rounded-2xl shadow border border-gray-100 px-3 py-2 md:px-4 md:py-6 w-full min-h-[64px] md:min-h-[unset]"
+                  className="flex flex-row items-center justify-between bg-white bg-opacity-90 rounded-2xl shadow border border-gray-100 px-3 py-2 w-full min-h-[100px]"
                 >
                   {/* Nomor Kandidat */}
-                  <div className="flex-shrink-0 w-8 h-8 md:w-12 md:h-12 bg-[#FF7272] text-white rounded-full flex items-center justify-center font-semibold text-base md:text-2xl mr-2 md:mr-4" style={{ fontFamily: 'Plus Jakarta Sans' }}>
+                  <div className="flex-shrink-0 w-8 h-8 bg-[#FF7272] text-white rounded-full flex items-center justify-center font-semibold text-base mr-2" style={{ fontFamily: 'Plus Jakarta Sans' }}>
                     {row.no}
                   </div>
                   {/* Foto Kandidat */}
-                  <div className="flex-shrink-0 w-10 h-10 md:w-20 md:h-20 rounded-lg overflow-hidden bg-white mr-2 md:mr-4">
+                  <div className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-white mr-2 flex items-center justify-center">
                     <img
                       src={row.image}
                       alt={`Kandidat ${row.no}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                   </div>
                   {/* Nama & Persentase */}
                   <div className="flex-1 flex flex-row items-center justify-between">
-                    <span className="text-sm md:text-xl font-medium text-gray-900" style={{ fontFamily: 'Plus Jakarta Sans' }}>{row.name}</span>
-                    <span className="text-base md:text-2xl font-bold text-gray-900 ml-2 md:ml-0" style={{ fontFamily: 'Plus Jakarta Sans' }}>
+                    <span className="text-sm font-medium text-gray-900" style={{ fontFamily: 'Plus Jakarta Sans' }}>{row.name}</span>
+                    <span className="text-base font-bold text-gray-900 ml-2" style={{ fontFamily: 'Plus Jakarta Sans' }}>
                       {parseFloat(row.vote_percentage).toFixed(1).replace('.', ',')}%
                     </span>
                   </div>
@@ -212,7 +244,8 @@ const Page = () => {
           </div>
         </main>
       </div>
-      {/* Section lain tanpa efek particles.js */}
+      {/* End Hero Section with Particles.js */}
+
       {/* Form Section */}
       <div className="w-full max-w-full mx-auto px-2 md:px-4 py-8 md:py-16 text-center">
         <h1
@@ -351,7 +384,13 @@ const Page = () => {
         </div>
       </div>
 
-      <Footer />
+      {/* Responsive Footer */}
+      <div className="hidden md:block">
+        <FooterDesktop />
+      </div>
+      <div className="block md:hidden">
+        <FooterMobile />
+      </div>
     </>
   );
 };
