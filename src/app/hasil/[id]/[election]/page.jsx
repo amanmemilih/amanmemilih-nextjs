@@ -21,9 +21,20 @@ export default function Home({ params }) {
   const [startPosition, setStartPosition] = useState({ x: 0, y: 0 });
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState(null);
+  const [wilayah, setWilayah] = useState(null);
 
   useEffect(() => {
     fetchDocument();
+  }, []);
+
+  useEffect(() => {
+    const wilayahData =
+      typeof window !== "undefined"
+        ? localStorage.getItem("wilayah_pemilihan")
+        : null;
+    if (wilayahData) {
+      setWilayah(JSON.parse(wilayahData));
+    }
   }, []);
 
   async function fetchDocument() {
@@ -129,12 +140,18 @@ export default function Home({ params }) {
             <div className="bg-gradient-to-r from-[#FFD596] to-[#FF7272] rounded-md relative z-10">
               <div className="bg-white bg-opacity-60 rounded-md px-6 py-3 text-left">
                 <span className="text-black font-medium">
-                  Wilayah Pemilihan:{" "}
+                  Wilayah Pemilihan:
                 </span>
                 <span className="text-gray-600 font-normal">
-                  {data?.tps?.province} / {data?.tps?.district} /{" "}
-                  {data?.tps?.subdistrict} / {data?.tps?.village} /{" "}
-                  {data?.tps?.username}
+                  {wilayah
+                    ? `${wilayah.province || "-"} / ${wilayah.district || "-"} / ${
+                        wilayah.subdistrict || "-"
+                      } / ${wilayah.village || "-"} / TPS: ${wilayah.tps || "-"}`
+                    : `${data?.tps?.province || "-"} / ${data?.tps?.district || "-"} / ${
+                        data?.tps?.subdistrict || "-"
+                      } / ${data?.tps?.village || "-"} / TPS: ${
+                        data?.tps?.username || "-"
+                      }`}
                 </span>
               </div>
             </div>
@@ -165,12 +182,12 @@ export default function Home({ params }) {
         )}
         {/* Footer moved outside of main */}
         {/* Responsive Footer */}
-      <div className="hidden md:block">
-        <FooterDesktop />
-      </div>
-      <div className="block md:hidden">
-        <FooterMobile />
-      </div>
+        <div className="hidden md:block">
+          <FooterDesktop />
+        </div>
+        <div className="block md:hidden">
+          <FooterMobile />
+        </div>
       </div>
 
       {/* Popup Modal */}
