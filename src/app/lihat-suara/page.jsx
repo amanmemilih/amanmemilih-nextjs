@@ -160,6 +160,16 @@ const Page = () => {
   function handleSearch() {
     if (documentID == null || documentID == "") return;
 
+    // Simpan data wilayah ke localStorage
+    const wilayah = {
+      province: province.find((p) => p.id == document.getElementById('province-select')?.value)?.name,
+      district: district?.find((d) => d.id == document.getElementById('district-select')?.value)?.name,
+      subdistrict: subdistrict?.find((s) => s.id == document.getElementById('subdistrict-select')?.value)?.name,
+      village: village?.find((v) => v.id == document.getElementById('village-select')?.value)?.name,
+      tps: tps?.find((t) => t.id == documentID)?.name,
+    };
+    localStorage.setItem("wilayah_pemilihan", JSON.stringify(wilayah));
+
     router.push(`/hasil/${documentID}/${electionType}`);
   }
 
@@ -280,6 +290,7 @@ const Page = () => {
             {/* Pilih Provinsi */}
             <div className="flex-1">
               <select
+                id="province-select"
                 className="w-full p-3 text-sm md:text-base border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
                 style={{ fontFamily: '"Plus Jakarta Sans"' }}
                 onChange={handleProvince}
@@ -298,6 +309,7 @@ const Page = () => {
             {/* Pilih Kota/Kabupaten */}
             <div className="flex-1">
               <select
+                id="district-select"
                 className="w-full p-3 text-sm md:text-base border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
                 style={{ fontFamily: '"Plus Jakarta Sans"' }}
                 disabled={district == null}
@@ -316,6 +328,7 @@ const Page = () => {
             {/* Pilih Kelurahan */}
             <div className="flex-1">
               <select
+                id="subdistrict-select"
                 className="w-full p-3 text-sm md:text-base border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
                 style={{ fontFamily: '"Plus Jakarta Sans"' }}
                 disabled={subdistrict == null}
@@ -337,6 +350,7 @@ const Page = () => {
             {/* Pilih Kecamatan */}
             <div className="flex-1 w-full">
               <select
+                id="village-select"
                 className="w-full p-3 text-sm md:text-base border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
                 style={{ fontFamily: '"Plus Jakarta Sans"' }}
                 onChange={handleVillage}
@@ -355,6 +369,7 @@ const Page = () => {
             {/* Pilih TPS */}
             <div className="flex-1 w-full">
               <select
+                id="tps-select"
                 className="w-full p-3 text-sm md:text-base border border-gray-250 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#ABABAB]"
                 style={{ fontFamily: '"Plus Jakarta Sans"' }}
                 disabled={tps == null}
