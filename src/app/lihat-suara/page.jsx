@@ -183,10 +183,10 @@ const Page = () => {
           <div className="hidden md:flex flex-row gap-8 w-full justify-center mt-8">
             {((!isLoading && candidatSummary.length === 0)
               ? [
-                  { no: 1, name: 'Anies & Cak Imin', image: '/assets/images/paslon1.svg', vote_percentage: 0 },
-                  { no: 2, name: 'Prabowo & Gibran', image: '/assets/images/paslon2.svg', vote_percentage: 0 },
-                  { no: 3, name: 'Ganjar & Mahfud', image: '/assets/images/paslon3.svg', vote_percentage: 0 },
-                ]
+                { no: 1, name: 'Anies & Cak Imin', image: '/assets/images/paslon1.png', vote_percentage: 0 },
+                { no: 2, name: 'Prabowo & Gibran', image: '/assets/images/paslon2.png', vote_percentage: 0 },
+                { no: 3, name: 'Ganjar & Mahfud', image: '/assets/images/paslon3.png', vote_percentage: 0 },
+              ]
               : candidatSummary
             ).map((row) => (
               <div

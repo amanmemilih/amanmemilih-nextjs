@@ -43,12 +43,6 @@ const Navbar = () => {
               Teknologi
             </Link>
             <Link
-              href={`${pathName != "/" ? "/" : ""}#berita`}
-              className="text-base text-gray-800 px-4 py-2.5 hover:text-[#FF7272]"
-            >
-              Berita
-            </Link>
-            <Link
               href="/lihat-suara"
               className="text-base px-6 py-2.5 rounded-xl text-white bg-[#FF7272] transition-all duration-300 hover:bg-[#FF5252] hover:text-white"
             >
