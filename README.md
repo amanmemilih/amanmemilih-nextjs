@@ -2,7 +2,7 @@
 
 > **Landing Page Preview**
 >
-> ![AmanMemilih Landing Page](public/assets/images/hero-mobile.png)
+> ![AmanMemilih Landing Page](public/assets/images/landing_page.png)
 
 AmanMemilih adalah aplikasi web real count untuk pemilihan Presiden dan Wakil Presiden Indonesia, dibangun dengan Next.js, Tailwind CSS, dan teknologi Blockchain (Web3). Aplikasi ini menampilkan hasil suara, informasi kandidat, serta pencarian suara berdasarkan wilayah secara real-time dan responsif. Semua data suara dicatat secara transparan dan terdesentralisasi menggunakan smart contract blockchain untuk memastikan integritas dan keamanan data.
 
