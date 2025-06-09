@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ARGOCD_SERVER: argocd.motionlaboratory.com
-      ARGOCD_APP_NAME: amanmemilih
+      ARGOCD_APP_NAME: amanmemilih-frontend
     needs: [build]
     steps:
       - name: Check Out Repo
