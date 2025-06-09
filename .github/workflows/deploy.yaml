@@ -23,7 +23,7 @@ jobs:
           context: .
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/amanmemilih-frontend:${{ github.ref_name }}
           build-args: |
-            NEXT_PUBLIC_API_URL=https://amanmemilih-backend.motionlaboratory.com/api
+            NEXT_PUBLIC_API_URL=https://amanmemilih-backend.motionlaboratory.com
 
   deploy:
     runs-on: ubuntu-latest
