@@ -181,35 +181,40 @@ const Page = () => {
           </p> */}
           {/* Paslon Percentage Section - Desktop */}
           <div className="hidden md:flex flex-row gap-8 w-full justify-center mt-8">
-            {isLoading
-              ? null
-              : candidatSummary.map((row, idx) => (
-                <div
-                  key={row.no}
-                  className="flex flex-col items-center bg-white rounded-[20px] border border-[#F2F2F2] shadow-lg w-[600px] max-w-[640px] min-h-[420px] px-0 pt-0 pb-8 relative transition-all duration-300 hover:scale-105"
-                >
-                  {/* Foto Kandidat dengan background gradasi, gambar benar-benar nempel ke bawah dan nomor urut di atas gambar */}
-                  <div className="w-full h-[220px] rounded-t-[20px] flex items-end justify-center bg-gradient-to-b from-[#FFB084] to-[#FF7272] relative overflow-visible p-0">
-                    {/* Nomor urut bulat di atas gambar, menempel di bawah gradasi dan di atas area putih */}
-                    <div className="absolute left-1/2 -translate-x-1/2 bottom-[-36px] z-50">
-                      <div className="w-16 h-16 rounded-full bg-[#FF7272] flex items-center justify-center text-white text-3xl font-bold border-4 border-white shadow-2xl">
-                        {row.no}
-                      </div>
+            {((!isLoading && candidatSummary.length === 0)
+              ? [
+                  { no: 1, name: 'Anies & Cak Imin', image: '/assets/images/paslon1.svg', vote_percentage: 0 },
+                  { no: 2, name: 'Prabowo & Gibran', image: '/assets/images/paslon2.svg', vote_percentage: 0 },
+                  { no: 3, name: 'Ganjar & Mahfud', image: '/assets/images/paslon3.svg', vote_percentage: 0 },
+                ]
+              : candidatSummary
+            ).map((row) => (
+              <div
+                key={row.no}
+                className="flex flex-col items-center bg-white rounded-[20px] border border-[#F2F2F2] shadow-lg w-[600px] max-w-[640px] min-h-[420px] px-0 pt-0 pb-8 relative transition-all duration-300 hover:scale-105"
+              >
+                {/* Foto Kandidat dengan background gradasi, gambar benar-benar nempel ke bawah dan nomor urut di atas gambar */}
+                <div className="w-full h-[220px] rounded-t-[20px] flex items-end justify-center bg-gradient-to-b from-[#FFB084] to-[#FF7272] relative overflow-visible p-0">
+                  {/* Nomor urut bulat di atas gambar, menempel di bawah gradasi dan di atas area putih */}
+                  <div className="absolute left-1/2 -translate-x-1/2 bottom-[-36px] z-50">
+                    <div className="w-16 h-16 rounded-full bg-[#FF7272] flex items-center justify-center text-white text-3xl font-bold border-4 border-white shadow-2xl">
+                      {row.no}
                     </div>
-                    <img
-                      src={row.image}
-                      alt={`Kandidat ${row.no}`}
-                      className="w-full h-[220px] object-contain drop-shadow-xl mx-auto mb-[-8px] z-10"
-                      style={{ maxWidth: '100%', objectPosition: 'bottom' }}
-                    />
                   </div>
-                  {/* Nama Paslon & Persentase */}
-                  <div className="flex flex-col items-center justify-center mt-16 px-4 w-full min-h-[120px]">
-                    <span className="block text-2xl font-semibold text-[#222] mb-2 text-center leading-tight whitespace-nowrap overflow-hidden text-ellipsis" style={{ fontFamily: 'Plus Jakarta Sans' }}>{row.name}</span>
-                    <span className="block text-5xl font-bold text-[#222] mt-2 text-center whitespace-nowrap" style={{ fontFamily: 'Plus Jakarta Sans' }}>{parseFloat(row.vote_percentage).toFixed(1).replace('.', ',')}%</span>
-                  </div>
+                  <img
+                    src={row.image}
+                    alt={`Kandidat ${row.no}`}
+                    className="w-full h-[220px] object-contain drop-shadow-xl mx-auto mb-[-8px] z-10"
+                    style={{ maxWidth: '100%', objectPosition: 'bottom' }}
+                  />
                 </div>
-              ))}
+                {/* Nama Paslon & Persentase */}
+                <div className="flex flex-col items-center justify-center mt-16 px-4 w-full min-h-[120px]">
+                  <span className="block text-2xl font-semibold text-[#222] mb-2 text-center leading-tight whitespace-nowrap overflow-hidden text-ellipsis" style={{ fontFamily: 'Plus Jakarta Sans' }}>{row.name}</span>
+                  <span className="block text-5xl font-bold text-[#222] mt-2 text-center whitespace-nowrap" style={{ fontFamily: 'Plus Jakarta Sans' }}>{parseFloat(row.vote_percentage).toFixed(1).replace('.', ',')}%</span>
+                </div>
+              </div>
+            ))}
           </div>
           {/* Mobile version tetap pakai flex-col seperti sebelumnya */}
           <div className="flex flex-col gap-2 md:hidden w-full">
