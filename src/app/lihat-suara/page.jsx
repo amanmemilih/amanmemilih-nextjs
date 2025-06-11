@@ -173,6 +173,21 @@ const Page = () => {
     router.push(`/hasil/${documentID}/${electionType}`);
   }
 
+  // Fallback image URLs untuk paslon
+  const fallbackImages = {
+    1: 'https://gateway.pinata.cloud/ipfs/bafkreigau5gbbgugrpotbkqvzhmierfongcxjbkrt6mqeq56cpri7qyc2y',
+    2: 'https://gateway.pinata.cloud/ipfs/bafkreide7djx7wkwfahs4rhqedp3tnecuec4vfmm2r6ze22izblpfc6rbu',
+    3: 'https://gateway.pinata.cloud/ipfs/bafybeiblgitd5jmlaiby45crol3fozgu5j37vqguci54zxpx3jwvsv7luy',
+  };
+
+  // Helper untuk dapatkan image yang benar (fallback jika kosong)
+  const getPaslonImage = (row) => {
+    if (!row.image || row.image === '' || row.image === undefined) {
+      return fallbackImages[row.no] || '';
+    }
+    return row.image;
+  };
+
   return (
     <>
       <Script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" strategy="beforeInteractive" />
@@ -193,9 +208,9 @@ const Page = () => {
           <div className="hidden md:flex flex-row gap-8 w-full justify-center mt-8">
             {((!isLoading && candidatSummary.length === 0)
               ? [
-                { no: 1, name: 'Anies & Cak Imin', image: '/assets/images/paslon1.png', vote_percentage: 0 },
-                { no: 2, name: 'Prabowo & Gibran', image: '/assets/images/paslon2.png', vote_percentage: 0 },
-                { no: 3, name: 'Ganjar & Mahfud', image: '/assets/images/paslon3.png', vote_percentage: 0 },
+                { no: 1, name: 'Anies & Cak Imin', image: fallbackImages[1], vote_percentage: 0 },
+                { no: 2, name: 'Prabowo & Gibran', image: fallbackImages[2], vote_percentage: 0 },
+                { no: 3, name: 'Ganjar & Mahfud', image: fallbackImages[3], vote_percentage: 0 },
               ]
               : candidatSummary
             ).map((row) => (
@@ -212,7 +227,7 @@ const Page = () => {
                     </div>
                   </div>
                   <img
-                    src={row.image}
+                    src={getPaslonImage(row)}
                     alt={`Kandidat ${row.no}`}
                     className="w-full h-[220px] object-contain drop-shadow-xl mx-auto mb-[-8px] z-10"
                     style={{ maxWidth: '100%', objectPosition: 'bottom' }}
@@ -242,7 +257,7 @@ const Page = () => {
                   {/* Foto Kandidat */}
                   <div className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-white mr-2 flex items-center justify-center">
                     <img
-                      src={row.image}
+                      src={getPaslonImageMobile(row)}
                       alt={`Kandidat ${row.no}`}
                       className="w-full h-full object-contain"
                     />
