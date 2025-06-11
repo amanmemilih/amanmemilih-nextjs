@@ -188,6 +188,14 @@ const Page = () => {
     return row.image;
   };
 
+  // Helper untuk dapatkan image yang benar (fallback jika kosong)
+  const getPaslonImageMobile = (row) => {
+    if (!row.image || row.image === '' || row.image === undefined) {
+      return fallbackImages[row.no] || '';
+    }
+    return row.image;
+  };
+
   return (
     <>
       <Script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" strategy="beforeInteractive" />
@@ -245,7 +253,14 @@ const Page = () => {
           <div className="flex flex-col gap-2 md:hidden w-full">
             {isLoading
               ? ""
-              : candidatSummary.map((row) => (
+              : ((candidatSummary.length === 0)
+                ? [
+                  { no: 1, name: 'Anies & Cak Imin', image: fallbackImages[1], vote_percentage: 0 },
+                  { no: 2, name: 'Prabowo & Gibran', image: fallbackImages[2], vote_percentage: 0 },
+                  { no: 3, name: 'Ganjar & Mahfud', image: fallbackImages[3], vote_percentage: 0 },
+                ]
+                : candidatSummary
+              ).map((row) => (
                 <div
                   key={row.no}
                   className="flex flex-row items-center justify-between bg-white bg-opacity-90 rounded-2xl shadow border border-gray-100 px-3 py-2 w-full min-h-[100px]"
@@ -254,12 +269,12 @@ const Page = () => {
                   <div className="flex-shrink-0 w-8 h-8 bg-[#FF7272] text-white rounded-full flex items-center justify-center font-semibold text-base mr-2" style={{ fontFamily: 'Plus Jakarta Sans' }}>
                     {row.no}
                   </div>
-                  {/* Foto Kandidat */}
-                  <div className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-white mr-2 flex items-center justify-center">
+                  {/* Foto Kandidat dengan background gradasi */}
+                  <div className="flex-shrink-0 w-24 aspect-[4/3] rounded-lg overflow-hidden mr-4 bg-gradient-to-b from-[#FFB084] to-[#FF7272] flex items-center justify-center">
                     <img
                       src={getPaslonImageMobile(row)}
                       alt={`Kandidat ${row.no}`}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                   {/* Nama & Persentase */}
