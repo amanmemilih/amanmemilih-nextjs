@@ -11,7 +11,7 @@ variables:
   imageName: 211104/amanmemilih-frontend
   tag: $(Build.SourceBranchName)
   argocdAppName: amanmemilih-frontend
-  - group: ARGOCD_VARIABLES
+  group: ARGOCD_VARIABLES
 
 pool:
   vmImage: ubuntu-latest
