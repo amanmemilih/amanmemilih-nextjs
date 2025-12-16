@@ -8,7 +8,7 @@ export default function HeroDesktop() {
             <div className="grid grid-cols-2 p-8 place-items-center">
                 <div className="gap-y-35">
                     <p className="font-semibold text-[60px] md:text-[40]" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-                        Rubah Disini Suara Modern dengan Keamanan Tinggi dan Fleksibilitas
+                        Pemilihan Suara Modern dengan Keamanan Tinggi dan Fleksibilitas
                     </p>
                     <p className="font-normal leading-8 text-[20px] md:text-[10] mt-12" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                         AmanMemilih hadir sebagai solusi dari pengembangan sistem rekapitulasi suara menggunakan teknologi Web 3.0, dengan ini hasil rekapitulasi suara tidak bisa dimanipulasi oleh pihak ketiga.
