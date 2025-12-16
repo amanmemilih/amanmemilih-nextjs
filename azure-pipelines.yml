@@ -58,6 +58,7 @@ stages:
         argocd login $(ARGOCD_SERVER) \
           --auth-token $(ARGOCD_TOKEN) \
           --insecure
+          --grpc-web
       displayName: Login to ArgoCD
 
     - script: |
