@@ -45,33 +45,10 @@ stages:
     steps:
     - checkout: self
 
-    - bash: echo "$(ARGOCD_SERVER)"
-    - bash: echo "$(ARGOCD_TOKEN)"
-    - bash: telnet $(ARGOCD_SERVER) 80
-
-    - script: |
-        curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
-        chmod +x argocd
-        sudo mv argocd /usr/local/bin/
-      displayName: Install ArgoCD CLI
-
-    - script: |
-        argocd login $(ARGOCD_SERVER) \
-          --auth-token $(ARGOCD_TOKEN) \
-          --insecure
-          --grpc-web
-      displayName: Login to ArgoCD
-
-    - script: |
-        argocd app set $(argocdAppName) \
-          --project frontend-project \
-          --helm-set image.tag=$(Build.SourceBranchName)
-      displayName: Update Image Tag
-
-    - script: |
-        argocd app sync $(argocdAppName)
-      displayName: Sync Application
-
-    - script: |
-        argocd app wait $(argocdAppName) --health
-      displayName: Wait App Healthy
+    - task: vsix-argocd-task@1
+      inputs:
+        ArgoCDService: 'argocd-connection'
+        argocdApplication: '{ Value : "amanmemilih-frontend", DisplayValue : "amanmemilih-frontend" }'
+        argocdCommand: 'sync'
+        DryRunFlag: true
+ 
