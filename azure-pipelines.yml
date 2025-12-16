@@ -57,11 +57,16 @@ stages:
         --password $(ARGOCD_PASSWORD) --insecure
       displayName: Login to ArgoCD
 
-    - task: vsix-argocd-task@1
+    - script: |
+        argocd app set $(argocdAppName) \
+          --project frontend-project \
+          --helm-set image.tag=$(Build.SourceBranchName)
+      displayName: Update Image Tag
+
+    - script: |
+        argocd app sync $(argocdAppName)
       displayName: Sync Application
-      inputs:
-        ArgoCDService: 'argocd-connection'
-        argocdApplication: '{ Value : "amanmemilih-frontend", DisplayValue : "amanmemilih-frontend" }'
-        argocdCommand: 'sync'
-        DryRunFlag: true
- 
+
+    - script: |
+        argocd app wait $(argocdAppName) --health
+      displayName: Wait App Healthy
