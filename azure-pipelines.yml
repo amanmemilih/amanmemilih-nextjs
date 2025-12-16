@@ -8,10 +8,14 @@ trigger:
     - v*
 
 variables:
-  imageName: 211104/amanmemilih-frontend
-  tag: $(Build.SourceBranchName)
-  argocdAppName: amanmemilih-frontend
-  group: ARGOCD_VARIABLES
+- group: ARGOCD_VARIABLES
+- name: imageName
+  value: 211104/amanmemilih-frontend
+- name: tag
+  value: $(Build.SourceBranchName)
+- name: argocdAppName
+  value: amanmemilih-frontend
+
 
 pool:
   vmImage: ubuntu-latest
@@ -41,8 +45,8 @@ stages:
     steps:
     - checkout: self
 
-    - bash: echo $(ARGOCD_SERVER)
-    - bash: echo $(ARGOCD_TOKEN)
+    - bash: echo "$(ARGOCD_SERVER)"
+    - bash: echo "$(ARGOCD_TOKEN)"
 
     - script: |
         curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
