@@ -47,6 +47,7 @@ stages:
 
     - bash: echo "$(ARGOCD_SERVER)"
     - bash: echo "$(ARGOCD_TOKEN)"
+    - bash: telnet $(ARGOCD_SERVER) 80
 
     - script: |
         curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
