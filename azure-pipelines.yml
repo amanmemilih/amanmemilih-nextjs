@@ -46,10 +46,10 @@ stages:
     - checkout: self
 
     - script: |
-      curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
-      chmod +x argocd
-      sudo mv argocd /usr/local/bin/
-    displayName: Install ArgoCD CLI
+        curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+        chmod +x argocd
+        sudo mv argocd /usr/local/bin/
+      displayName: Install ArgoCD CLI
 
     - script: |
         argocd login $(ARGOCD_SERVER) \
