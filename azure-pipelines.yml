@@ -10,16 +10,19 @@ trigger:
 variables:
   imageName: 211104/amanmemilih-frontend
   tag: $(Build.SourceBranchName)
+  argocdAppName: amanmemilih-frontend
 
 pool:
   vmImage: ubuntu-latest
 
 stages:
-- stage: CI
+- stage: BuildAndPush
+  displayName: Build and Push Docker Image
   jobs:
   - job: BuildAndPush
     steps:
     - task: Docker@2
+      displayName: Build and Push Docker Image
       inputs:
         containerRegistry: yazids-docker
         repository: $(imageName)
@@ -27,3 +30,39 @@ stages:
         Dockerfile: Dockerfile
         tags: |
           $(tag)
+
+- stage: DeployWithArgoCD
+  dependsOn: BuildAndPush
+  displayName: Deploy with ArgoCD
+  jobs:
+  - job: DeployWithArgoCD
+
+    steps:
+    - checkout: self
+
+    - script: |
+        curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+        chmod +x argocd
+        sudo mv argocd /usr/local/bin/
+      displayName: Install ArgoCD CLI
+
+    - script: |
+        argocd login $(ARGOCD_SERVER) \
+          --auth-token $(ARGOCD_TOKEN) \
+          --insecure \
+          --grpc-web
+      displayName: Login to ArgoCD
+
+    - script: |
+        argocd app set $(argocdAppName) \
+          --project frontend-project \
+          --helm-set image.tag=$(Build.SourceBranchName)
+      displayName: Update Image Tag
+
+    - script: |
+        argocd app sync $(argocdAppName)
+      displayName: Sync Application
+
+    - script: |
+        argocd app wait $(argocdAppName) --health
+      displayName: Wait App Healthy
