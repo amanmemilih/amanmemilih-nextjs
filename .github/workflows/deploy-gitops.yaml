@@ -41,13 +41,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Scan Docker Image with Trivy (JSON output)
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p trivy-reports
-          trivy i "211104/internship:${{ needs.build_docker.outputs.image_tag }}" \
-            --format json \
-            --output trivy-reports/results.json
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          image-ref: 'docker.io/${{ secrets.DOCKERHUB_USERNAME }}/amanmemilih-frontend:${{ github.ref_name }}'
+          format: 'json'
+          output: 'trivy-reports/results.json'
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+          ignore-unfixed: true
 
       - name: Upload Trivy JSON report
         uses: actions/upload-artifact@v6
