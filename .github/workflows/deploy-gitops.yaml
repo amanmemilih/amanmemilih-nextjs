@@ -1,0 +1,112 @@
+name: CI
+on:
+  push:
+    tags:
+      - "v*-staging*"
+      - "v*-stable*"
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Login to docker
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push docker image
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          context: .
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/amanmemilih-frontend:${{ github.ref_name }}
+          build-args: |
+            NEXT_PUBLIC_API_URL=https://amanmemilih-backend.motionlaboratory.com
+  
+  container_scanning:
+    name: Scan Vulnerabilities in Docker Image with Trivy
+    runs-on:
+      group: linux-runner
+      labels: Linux
+    needs: [ build_docker ]
+
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Scan Docker Image with Trivy (JSON output)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p trivy-reports
+          trivy i "211104/internship:${{ needs.build_docker.outputs.image_tag }}" \
+            --format json \
+            --output trivy-reports/results.json
+
+      - name: Upload Trivy JSON report
+        uses: actions/upload-artifact@v3
+        with:
+          name: results.json
+          path: trivy-reports/results.json
+
+  helm_values:
+    name: Bump Helm values (GitOps - direct push)
+    runs-on:
+      group: linux-runner
+      labels: Linux
+    needs: [ policy_gate, build_docker ]
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout Helm repo (github.com)
+        uses: actions/checkout@v4
+        with:
+          repository: yazidalg/motion-chart
+          github-server-url: https://github.com
+          token: ${{ secrets.HELM_REPO_TOKEN }}
+          ref: main
+          path: motion-chart
+
+      - name: Install yq (no sudo)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.local/bin"
+          wget -qO "$HOME/.local/bin/yq" https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          chmod +x "$HOME/.local/bin/yq"
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Update crud-api image tag in values.yaml
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE="motion-chart/crud-api/values.yaml"
+          TAG="${{ needs.build_docker.outputs.image_tag }}"
+          yq -i ".image.tag = \"${TAG}\"" "$FILE"
+
+      - name: Commit and push to Helm repo
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd motion-chart
+
+          git config user.name "ci-bot"
+          git config user.email "ci-bot@users.noreply.github.com"
+
+          git add crud-api/values.yaml
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(crud-api): bump image tag to ${{ needs.build_docker.outputs.image_tag }} (app ${GITHUB_REPOSITORY}@${GITHUB_SHA})"
+          git push
