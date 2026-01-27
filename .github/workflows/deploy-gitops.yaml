@@ -50,7 +50,7 @@ jobs:
             --output trivy-reports/results.json
 
       - name: Upload Trivy JSON report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: results.json
           path: trivy-reports/results.json
