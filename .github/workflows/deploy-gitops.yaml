@@ -39,6 +39,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      - name: Create report directory
+        run: mkdir -p trivy-reports
 
       - name: Scan Docker Image with Trivy (JSON output)
         uses: aquasecurity/trivy-action@0.33.1
