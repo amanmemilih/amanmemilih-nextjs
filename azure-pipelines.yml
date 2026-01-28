@@ -16,6 +16,13 @@ variables:
 - name: argocdAppName
   value: amanmemilih-frontend
 
+resources:
+  repositories:
+  - repository: HelmChartRepository
+    type: github
+    endpoint: https://github.com/yazidalg/motion-chart
+    name: MotionChart
+    ref: main
 
 pool:
   vmImage: ubuntu-latest
@@ -36,37 +43,35 @@ stages:
         tags: |
           $(tag)
 
-- stage: DeployWithArgoCD
+- stage: UpdateHelmChart
   dependsOn: BuildAndPush
-  displayName: Deploy with ArgoCD
+  displayName: Update Helm Chart (GitOps)
   jobs:
-  - job: DeployWithArgoCD
+  - job: UpdateHelmChart
 
     steps:
-    - checkout: self
+    - checkout: HelmChartRepository
 
     - script: |
-        curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
-        chmod +x argocd
-        sudo mv argocd /usr/local/bin/
-      displayName: Install ArgoCD CLI
-
+        set -euo pipefail
+        mkdir -p "$HOME/.local/bin"
+        wget -qO "$HOME/.local/bin/yq" https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+        chmod +x "$HOME/.local/bin/yq"
+      displayName: Install yq (no sudo)
+    
     - script: |
-        argocd login $(ARGOCD_SERVER) \
-        --username $(ARGOCD_USERNAME) \
-        --password $(ARGOCD_PASSWORD) --insecure
-      displayName: Login to ArgoCD
-
-    - script: |
-        argocd app set $(argocdAppName) \
-          --project frontend-project \
-          --helm-set image.tag=$(Build.SourceBranchName)
+        set -euo pipefail
+        FILE="motion-chart/amanmemilih-frontend/values.yaml"
+        TAG="$(Build.SourceBranchName)"
+        yq -i ".image.tag = \"${TAG}\"" "$FILE"
       displayName: Update Image Tag
 
     - script: |
-        argocd app sync $(argocdAppName)
-      displayName: Sync Application
-
-    - script: |
-        argocd app wait $(argocdAppName) --health
-      displayName: Wait App Healthy
+        set -euo pipefail
+        cd motion-chart
+        git config user.name "ci-bot"
+        git config user.email "ci-bot@users.noreply.github.com"
+        git add amanmemilih-frontend/values.yaml
+        git commit -m "chore(amanmemilih-frontend): bump image tag to $(Build.SourceBranchName)"
+        git push
+      displayName: Commit and push to Helm repo

@@ -11,7 +11,7 @@ export default function HeroDesktop() {
                         Pemilihan dengan Keamanan Tinggi dan Fleksibilitas Perubahan
                     </p> */}
                     <p className="font-semibold text-[60px] md:text-[40]" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-                        First Try Static Application Security Testing
+                        Second Try Static Application Security Testing
                     </p>
                     <p className="font-normal leading-8 text-[20px] md:text-[10] mt-12" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                         AmanMemilih hadir sebagai solusi dari pengembangan sistem rekapitulasi suara menggunakan teknologi Web 3.0, dengan ini hasil rekapitulasi suara tidak bisa dimanipulasi oleh pihak ketiga.
