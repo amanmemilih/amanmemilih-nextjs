@@ -40,48 +40,20 @@ stages:
 
     - script: |
         set -euo pipefail
+        chmod -R 777 ./
 
-        if [ -z "${TARGET_URL}" ]; then
-          echo "ERROR: targetUrl is required."
-          exit 1
-        fi
-
-        OUT_DIR="$(Build.ArtifactStagingDirectory)/zap"
-        mkdir -p "${OUT_DIR}"
-        chmod -R a+rwX "${OUT_DIR}"
-
-        # Normalize boolean (handles True/False or true/false)
-        FAIL_ON_ALERTS_NORM="$(echo "${FAIL_ON_ALERTS}" | tr '[:upper:]' '[:lower:]')"
-
-        set +e
         docker run --rm \
-          -u "$(id -u):$(id -g)" \
-          -v "${OUT_DIR}:/zap/wrk" \
-          -e HOME=/tmp \
-          -e ZAP_HOME=/tmp \
-          ghcr.io/zaproxy/zaproxy:stable \
-          zap-baseline.py \
-            -t "${TARGET_URL}" \
-            -m "${SCAN_MINUTES}" \
-            -w /zap/wrk/zap_out.json \
-            -z "-config automation.summary.file=/zap/wrk/zap_out.json -config automation.summary.format=json" \
-            -r zap_report.html \
-            -J zap_report.json \
-            -x zap_report.xml
-        ZAP_EXIT=$?
-        set -e
+          -v $(pwd):/zap/wrk/:rw \
+          -t owasp/zap2docker-weekly \
+          zap-api-scan.py \
+          -t ${{ parameters.targetUrl }} \
+          -f openapi \
+          -g api-scan.conf \
+          -x OWASP-ZAP-Report.xml \
+          -r api-scan-report.html
 
-        echo "ZAP exit code: ${ZAP_EXIT}"
-        echo "${ZAP_EXIT}" > "${OUT_DIR}/zap_exit_code.txt"
-
-        echo "Pipeline will continue. ZAP exit code: ${ZAP_EXIT}"
+        true
       displayName: Run OWASP ZAP baseline scan
-      env:
-        TARGET_URL: ${{ parameters.targetUrl }}
-        SCAN_MINUTES: ${{ parameters.zapScanMinutes }}
-        FAIL_ON_ALERTS: ${{ parameters.failOnAlerts }}
-        APP_NAME: ${{ parameters.appName }}
-        REVISION: ${{ parameters.revision }}
 
     - task: PublishPipelineArtifact@1
       displayName: Publish ZAP reports (always)
