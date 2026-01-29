@@ -63,6 +63,7 @@ stages:
           zap-baseline.py \
             -t "${TARGET_URL}" \
             -m "${SCAN_MINUTES}" \
+            -w /zap/wrk/zap_out.json \
             -r zap_report.html \
             -J zap_report.json \
             -x zap_report.xml
