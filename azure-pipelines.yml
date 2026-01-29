@@ -42,28 +42,21 @@ stages:
         set -euo pipefail
 
         if [ -z "${TARGET_URL}" ]; then
-          echo "ERROR: targetUrl is required. Provide it via templateParameters.targetUrl."
+          echo "ERROR: targetUrl is required."
           exit 1
         fi
-
-        echo "=== DAST Context ==="
-        echo "Target URL : ${TARGET_URL}"
-        echo "App Name   : ${APP_NAME}"
-        echo "Revision   : ${REVISION}"
-        echo "Max Minutes: ${SCAN_MINUTES}"
-        echo "============="
 
         OUT_DIR="$(Build.ArtifactStagingDirectory)/zap"
         mkdir -p "${OUT_DIR}"
         chmod -R a+rwX "${OUT_DIR}"
 
-        # Run ZAP baseline scan
+        # Normalize boolean (handles True/False or true/false)
+        FAIL_ON_ALERTS_NORM="$(echo "${FAIL_ON_ALERTS}" | tr '[:upper:]' '[:lower:]')"
+
         set +e
         docker run --rm \
           -u "$(id -u):$(id -g)" \
           -v "${OUT_DIR}:/zap/wrk" \
-          -e HOME=/zap/wrk \
-          -e ZAP_HOME=/zap/wrk \
           ghcr.io/zaproxy/zaproxy:stable \
           zap-baseline.py \
             -t "${TARGET_URL}" \
@@ -77,7 +70,7 @@ stages:
         echo "ZAP exit code: ${ZAP_EXIT}"
         echo "${ZAP_EXIT}" > "${OUT_DIR}/zap_exit_code.txt"
 
-        if [ "${FAIL_ON_ALERTS}" = "true" ] && [ "${ZAP_EXIT}" -ne 0 ]; then
+        if [ "${FAIL_ON_ALERTS_NORM}" = "true" ] && [ "${ZAP_EXIT}" -ne 0 ]; then
           echo "Failing pipeline because failOnAlerts=true and ZAP returned non-zero."
           exit "${ZAP_EXIT}"
         fi
