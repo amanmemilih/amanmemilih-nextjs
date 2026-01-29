@@ -62,6 +62,8 @@ stages:
         docker run --rm \
           -u "$(id -u):$(id -g)" \
           -v "${OUT_DIR}:/zap/wrk" \
+          -e HOME=/zap/wrk \
+          -e ZAP_HOME=/zap/wrk \
           ghcr.io/zaproxy/zaproxy:stable \
           zap-baseline.py \
             -t "${TARGET_URL}" \
