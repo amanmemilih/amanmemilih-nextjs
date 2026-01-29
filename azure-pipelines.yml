@@ -40,12 +40,11 @@ stages:
 
     - script: |
         set -euo pipefail
-        chmod -R 777 ./
 
         mkdir -p "$(Build.ArtifactStagingDirectory)/zap/wrk/"
 
         docker run --rm \
-          -v $(pwd):/zap/wrk/:rw \
+          -v "$(Build.ArtifactStagingDirectory)/zap/wrk/":/zap/wrk/:rw \
           -t ghcr.io/zaproxy/zaproxy:latest \
           zap-api-scan.py \
           -t "frontend.motionlaboratory.com" \
