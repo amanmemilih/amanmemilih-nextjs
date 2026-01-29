@@ -55,10 +55,12 @@ stages:
 
         OUT_DIR="$(Build.ArtifactStagingDirectory)/zap"
         mkdir -p "${OUT_DIR}"
+        chmod -R a+rwX "${OUT_DIR}"
 
         # Run ZAP baseline scan
         set +e
         docker run --rm \
+          -u "$(id -u):$(id -g)" \
           -v "${OUT_DIR}:/zap/wrk" \
           ghcr.io/zaproxy/zaproxy:stable \
           zap-baseline.py \
