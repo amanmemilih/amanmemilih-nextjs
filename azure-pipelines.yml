@@ -42,17 +42,20 @@ stages:
         set -euo pipefail
         chmod -R 777 ./
 
+        mkdir -p "$(Build.ArtifactStagingDirectory)/zap/wrk/"
+
         docker run --rm \
           -v $(pwd):/zap/wrk/:rw \
-          -t owasp/zap2docker-weekly \
+          -t ghcr.io/zaproxy/zaproxy:latest \
           zap-api-scan.py \
-          -t ${{ parameters.targetUrl }} \
+          -t "frontend.motionlaboratory.com" \
           -f openapi \
           -g api-scan.conf \
           -x OWASP-ZAP-Report.xml \
           -r api-scan-report.html
 
         true
+
       displayName: Run OWASP ZAP baseline scan
 
     - task: PublishPipelineArtifact@1
