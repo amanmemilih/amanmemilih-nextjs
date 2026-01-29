@@ -47,7 +47,7 @@ stages:
           -v "$(Build.ArtifactStagingDirectory)/zap/wrk/":/zap/wrk/:rw \
           -t ghcr.io/zaproxy/zaproxy:latest \
           zap-api-scan.py \
-          -t "frontend.motionlaboratory.com" \
+          -t "https://frontend.motionlaboratory.com" \
           -f openapi \
           -g api-scan.conf \
           -x OWASP-ZAP-Report.xml \
