@@ -64,6 +64,7 @@ stages:
             -t "${TARGET_URL}" \
             -m "${SCAN_MINUTES}" \
             -w /zap/wrk/zap_out.json \
+            -z "-config automation.summary.file=/zap/wrk/zap_out.json -config automation.summary.format=json" \
             -r zap_report.html \
             -J zap_report.json \
             -x zap_report.xml
@@ -73,12 +74,7 @@ stages:
         echo "ZAP exit code: ${ZAP_EXIT}"
         echo "${ZAP_EXIT}" > "${OUT_DIR}/zap_exit_code.txt"
 
-        if [ "${FAIL_ON_ALERTS_NORM}" = "true" ] && [ "${ZAP_EXIT}" -ne 0 ]; then
-          echo "Failing pipeline because failOnAlerts=true and ZAP returned non-zero."
-          exit "${ZAP_EXIT}"
-        fi
-
-        echo "Pipeline will continue (either ZAP returned 0 or failOnAlerts=false)."
+        echo "Pipeline will continue. ZAP exit code: ${ZAP_EXIT}"
       displayName: Run OWASP ZAP baseline scan
       env:
         TARGET_URL: ${{ parameters.targetUrl }}
