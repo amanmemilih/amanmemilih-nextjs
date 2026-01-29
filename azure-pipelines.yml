@@ -1,77 +1,103 @@
-trigger:
-  branches:
-    exclude:
-    - "*"
+trigger: none
+pr: none
 
-  tags:
-    include:
-    - v*
+name: dast-$(Date:yyyyMMdd)$(Rev:.r)
 
-variables:
-- group: ARGOCD_VARIABLES
-- name: imageName
-  value: 211104/amanmemilih-frontend
-- name: tag
-  value: $(Build.SourceBranchName)
-- name: argocdAppName
-  value: amanmemilih-frontend
-
-resources:
-  repositories:
-  - repository: HelmChartRepository
-    type: github
-    endpoint: https://github.com/yazidalg/motion-chart
-    name: MotionChart
-    ref: main
+parameters:
+  - name: targetUrl
+    displayName: Target URL to scan (required)
+    type: string
+    default: ''
+  - name: zapScanMinutes
+    displayName: ZAP max runtime (minutes)
+    type: number
+    default: 15
+  - name: failOnAlerts
+    displayName: Fail pipeline if ZAP exits non-zero (e.g., alerts found)
+    type: boolean
+    default: true
+  - name: appName
+    displayName: Application name (optional, for reporting)
+    type: string
+    default: ''
+  - name: revision
+    displayName: Deployed revision/tag (optional, for reporting)
+    type: string
+    default: ''
 
 pool:
   vmImage: ubuntu-latest
 
 stages:
-- stage: BuildAndPush
-  displayName: Build and Push Docker Image
+- stage: DAST
+  displayName: Dynamic Application Security Testing (OWASP ZAP)
   jobs:
-  - job: BuildAndPush
+  - job: ZapBaseline
+    displayName: ZAP Baseline Scan
+    timeoutInMinutes: 60
     steps:
-    - task: Docker@2
-      displayName: Build and Push Docker Image
+    - checkout: none
+
+    - script: |
+        set -euo pipefail
+
+        if [ -z "${TARGET_URL}" ]; then
+          echo "ERROR: targetUrl is required. Provide it via templateParameters.targetUrl."
+          exit 1
+        fi
+
+        echo "=== DAST Context ==="
+        echo "Target URL : ${TARGET_URL}"
+        echo "App Name   : ${APP_NAME}"
+        echo "Revision   : ${REVISION}"
+        echo "Max Minutes: ${SCAN_MINUTES}"
+        echo "============="
+
+        OUT_DIR="$(Build.ArtifactStagingDirectory)/zap"
+        mkdir -p "${OUT_DIR}"
+
+        # Run ZAP baseline scan
+        set +e
+        docker run --rm \
+          -v "${OUT_DIR}:/zap/wrk" \
+          ghcr.io/zaproxy/zaproxy:stable \
+          zap-baseline.py \
+            -t "${TARGET_URL}" \
+            -m "${SCAN_MINUTES}" \
+            -r zap_report.html \
+            -J zap_report.json \
+            -x zap_report.xml
+        ZAP_EXIT=$?
+        set -e
+
+        echo "ZAP exit code: ${ZAP_EXIT}"
+        echo "${ZAP_EXIT}" > "${OUT_DIR}/zap_exit_code.txt"
+
+        if [ "${FAIL_ON_ALERTS}" = "true" ] && [ "${ZAP_EXIT}" -ne 0 ]; then
+          echo "Failing pipeline because failOnAlerts=true and ZAP returned non-zero."
+          exit "${ZAP_EXIT}"
+        fi
+
+        echo "Pipeline will continue (either ZAP returned 0 or failOnAlerts=false)."
+      displayName: Run OWASP ZAP baseline scan
+      env:
+        TARGET_URL: ${{ parameters.targetUrl }}
+        SCAN_MINUTES: ${{ parameters.zapScanMinutes }}
+        FAIL_ON_ALERTS: ${{ parameters.failOnAlerts }}
+        APP_NAME: ${{ parameters.appName }}
+        REVISION: ${{ parameters.revision }}
+
+    - task: PublishPipelineArtifact@1
+      displayName: Publish ZAP reports (always)
+      condition: always()
       inputs:
-        containerRegistry: yazids-docker
-        repository: $(imageName)
-        command: buildAndPush
-        Dockerfile: Dockerfile
-        tags: |
-          $(tag)
-
-- stage: UpdateHelmChart
-  dependsOn: BuildAndPush
-  displayName: Update Helm Chart (GitOps)
-  jobs:
-  - job: UpdateHelmChart
-
-    steps:
-    - checkout: HelmChartRepository
+        targetPath: '$(Build.ArtifactStagingDirectory)/zap'
+        artifact: 'zap-reports'
 
     - script: |
         set -euo pipefail
-        mkdir -p "$HOME/.local/bin"
-        wget -qO "$HOME/.local/bin/yq" https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-        chmod +x "$HOME/.local/bin/yq"
-      displayName: Install yq (no sudo)
-    
-    - script: |
-        set -euo pipefail
-        FILE="motion-chart/amanmemilih-frontend/values.yaml"
-        TAG="$(Build.SourceBranchName)"
-        yq -i ".image.tag = \"${TAG}\"" "$FILE"
-      displayName: Update Image Tag
-
-    - script: |
-        set -euo pipefail
-        cd motion-chart
-        git config user.name "ci-bot"
-        git config user.email "ci-bot@users.noreply.github.com"
-        git add amanmemilih-frontend/values.yaml
-        git commit -m "chore(amanmemilih-frontend): bump image tag to $(Build.SourceBranchName)"
-        git push
-      displayName: Commit and push to Helm repo
+        echo "Reports published as artifact: zap-reports"
+        echo "Files:"
+        ls -lah "$(Build.ArtifactStagingDirectory)/zap" || true
+      displayName: List published report files
+      condition: always()
